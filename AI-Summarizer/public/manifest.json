@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "placeholderExtensionName",
+    "version": "0.0.0",
+    "icons": {
+        "32": "iconPlaceholder.jpg"
+    },
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "scripting"
+    ],
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ]
+}
