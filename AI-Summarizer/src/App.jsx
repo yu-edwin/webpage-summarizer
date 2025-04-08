@@ -2,14 +2,14 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { SettingsView } from "./view/SettingsView.jsx"
 
 const OutputTab = () => <div>OutputTab placeholder</div>;
-const SettingsTab = () => <div>SettingsTab placeholder</div>;
 
 
 function App() {
-    const [count, setCount] = useState(0)
-    const [tab, setTab] = useState("settings")
+    const [count, setCount] = useState(0);
+    const [tab, setTab] = useState("settings");
 
     return (
         <>
@@ -53,7 +53,7 @@ function App() {
                     Edit <code>src/App.jsx</code> and save to test HMR
                 </p>
                 {tab === "output" && <OutputTab />}
-                {tab === "settings" && <SettingsTab />}
+                {tab === "settings" && <SettingsView />}
 
             </div>
             <p className="read-the-docs">
