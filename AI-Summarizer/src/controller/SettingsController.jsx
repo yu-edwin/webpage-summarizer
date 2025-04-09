@@ -3,20 +3,20 @@ import { useState, useEffect } from "react"
 export function SettingsController() {
     // system prompt and its methods, defaults to ""
     const [systemPrompt, setSystemPrompt] = useState("");
+    useEffect(()=>{
+        getSystemPrompt().then(setSystemPrompt);
+    },[]);
     const getSystemPrompt = () => {
         return new Promise((resolve) => {
-            chrome.storage.local.get(["systemPrompt"], (value) => {
-                resolve(value || "");
+            chrome.storage.sync.get(["systemPrompt"], (value) => {
+                resolve(value.systemPrompt || "");
             });
         });
     }
     const updateSystemPrompt = (val) => {
         setSystemPrompt(val);
-        chrome.storage.local.set({ "systemPrompt": val });
+        chrome.storage.sync.set({ "systemPrompt": val });
     }
-    useEffect(()=>{
-        getSystemPrompt().then(setSystemPrompt);
-    },[]);
 
     // llm provider and its methods, defaults to "OpenAI"
     const [provider, setProvider] = useState("OpenAI");
@@ -25,20 +25,22 @@ export function SettingsController() {
     },[]);
     const getProvider = () => {
         return new Promise((resolve) => {
-            chrome.storage.local.get(["provider"], (value) => {
-                resolve(value || "OpenAI");
+            chrome.storage.sync.get(["provider"], (value) => {
+                resolve(value.provider || "OpenAI");
             });
         });
     };
     const updateProvider = (val) => {
         setProvider(val);
-        chrome.storage.local.set({ "provider": val});
+        chrome.storage.sync.set({ "provider": val});
     }
 
     return {
         systemPrompt,
         updateSystemPrompt,
         provider,
-        updateProvider
+        updateProvider,
+        key,
+        updateKey
     }
 }
