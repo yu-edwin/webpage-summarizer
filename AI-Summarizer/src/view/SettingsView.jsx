@@ -1,6 +1,27 @@
 import { useState } from 'react'
 import { SettingsController } from "../controller/SettingsController.jsx"
 
+
+function ProviderSelector() {
+
+}
+
+function KeyInput() {
+
+
+}
+
+function SystemPromptInput({ systemPrompt, updateSystemPrompt }) {
+    return (
+        <input
+            type = "text"
+            value = { systemPrompt }
+            onChange = { (prompt) => updateSystemPrompt(prompt.target.value)}
+        />
+    )
+}
+
+
 export function SettingsView() {
     const { systemPrompt, updateSystemPrompt,
             provider, updateProvider,
@@ -18,16 +39,10 @@ export function SettingsView() {
                     <option value="Google">Google</option>
                 </select>
             </div>
-            <input
-                type = "text"
-                value = { key }
-                onChange =  {(newKey) => updateKey(newKey.target.value)}
-            />
             <div>
-                <input
-                    type = "text"
-                    value = { systemPrompt }
-                    onChange = { (prompt) => updateSystemPrompt(prompt.target.value)}
+                <SystemPromptInput
+                    systemPrompt={systemPrompt}
+                    updateSystemPrompt={updateSystemPrompt}
                 />
             </div>
         </>
