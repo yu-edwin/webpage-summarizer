@@ -7,7 +7,6 @@ export function SummaryView() {
         <>
             <div>
                 <p></p>
-
             </div> 
 
 
