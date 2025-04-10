@@ -68,8 +68,10 @@ export function SettingsController() {
                 chrome.storage.sync.set({"key": initKeys});
             }
         });
-        getProvider().then(setProvider);
-        getKey(provider).then(setKey);
+        getProvider().then((val) =>{
+            setProvider(val);
+            getKey(val).then(setKey);
+        });
     },[]);
     return {
         systemPrompt,
