@@ -1,19 +1,34 @@
 import useEffect from "react"
+import Antrhopic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 
 
 export function SummaryController() {
-    const [url, setUrl] = useState("")
     useEffect(() => {
         getUrl();
     }, []);
+
     const getUrl = () => {
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            if (tabs && tabs[0]) {
-                setUrl(tabs[0].url);
-            }
+        return new Promise((resolve) => {
+            chrome.tabs.query({active: true, currentWindow: true}, (url) => {
+                resolve();
+            });
+        });
+    }
+
+    const isVideo = () => {};
+    
+    const getSummaryOpenAI = () => {};
+    const getSummaryAnthropic = () => {};
+    const getGoogleSummary = () => {};
+    const summary = () => {
+        var prompt;
+        getUrl().then((url) => {
         });
     };
 
-    const getSummaryOpenAI = () => {};
-    const getSummaryAnthropic = () => {};
+
+    return {
+        summary
+    }
 }
