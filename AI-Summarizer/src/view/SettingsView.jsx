@@ -1,22 +1,35 @@
-import { useState } from 'react'
 import { SettingsController } from "../controller/SettingsController.jsx"
 
 
-function ProviderSelector() {
-
+function ProviderSelector({ value, update}) {
+    return (
+        <select
+            value = { value }
+            onChange = {(option) => update(option.target.value)}
+        >
+            <option value="OpenAI">OpenAI</option>
+            <option value="Anthropic">Anthropic</option>
+            <option value="Google">Google</option>
+        </select>
+    )
 }
 
-function KeyInput() {
-
-
+function KeyInput({ value, update }) {
+    return (
+        <input
+            type="text"
+            value={ value}
+            onChange={(newKey)=>update(newKey.target.value)}
+        />
+    )
 }
 
-function SystemPromptInput({ systemPrompt, updateSystemPrompt }) {
+function SystemPromptInput({ value, update }) {
     return (
         <input
             type = "text"
-            value = { systemPrompt }
-            onChange = { (prompt) => updateSystemPrompt(prompt.target.value)}
+            value = { value }
+            onChange = { (prompt) => update(prompt.target.value)}
         />
     )
 }
@@ -30,19 +43,21 @@ export function SettingsView() {
     return (
         <>
             <div>
-                <select
-                    value = { provider }
-                    onChange = {(option) => updateProvider(option.target.value)}
-                >
-                    <option value="OpenAI">OpenAI</option>
-                    <option value="Anthropic">Anthropic</option>
-                    <option value="Google">Google</option>
-                </select>
+                <ProviderSelector
+                    value={provider}
+                    update={updateProvider}
+                />
+            </div>
+            <div>
+                <KeyInput
+                    value={key}
+                    update={updateKey}
+                />
             </div>
             <div>
                 <SystemPromptInput
-                    systemPrompt={systemPrompt}
-                    updateSystemPrompt={updateSystemPrompt}
+                    value={systemPrompt}
+                    update={updateSystemPrompt}
                 />
             </div>
         </>
