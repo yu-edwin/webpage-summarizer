@@ -17,25 +17,30 @@ export function SettingsModel() {
      * Retrieves any previously saved variable from chrome.stroage.sync
      * If property is not found, it defaults to "".
      */
-    const getProperty = (x, defaultValue) => {
+    const getProperty = (x) => {
         return new Promise((resolve) => {
-            chrome.storage.sync.get({ [x]: defaultValue }, (value) => {
+            chrome.storage.sync.get([x], (value) => {
                 resolve(value[x]);
             });
         });
     }
 
     useEffect(() => {
-        // retrieve variables, if previously set
-        getProperty("SystemPrompt", "").then((storedSystemPrompt) => {
-            setSystemPrompt(storedSystemPrompt);
-        });
-        getProperty("provider", "OpenAI").then((storedProvider) => {
-            setProvider(storedProvider);
-            getProperty("key", "").then(setKey);
-        });
-
+        // retrieve variables and initialize
+        // getProperty("SystemPrompt").then(setSystemPrompt);
+        // getProperty("provider").then((storedProvider) => {
+        //     if (storedProvider === undefined) {
+        //         storedProvider = "OpenAI"
+        //     }
+        //     setProvider(storedProvider);
+        //     getProperty("key" + storedProvider).then(setKey);
+        // });
     }, []);
 
-
+    return {
+        systemPrompt, setSystemPrompt,
+        key, setKey,
+        provider, setProvider,
+        getProperty, saveProperty
+    }
 }
