@@ -6,17 +6,17 @@ export function SettingsModel() {
     const [provider, setProvider] = useState("OpenAI");
 
     /**
-     * Saves given value to [x] within chrome.storage.sync
+     * stores given value to [x] within chrome.storage.sync
      */
-    const saveProperty = (x, value) => {
+    const storeProperty = (x, value) => {
         chrome.storage.sync.set({ [x]: value });
     }
 
     /**
-     * Retrieves any previously saved variable from chrome.stroage.sync
+     * Retrieves any previously stored variable from chrome.stroage.sync
      * If property is not found, it defaults to "".
      */
-    const getProperty = (x) => {
+    const fetchProperty = (x) => {
         return new Promise((resolve) => {
             chrome.storage.sync.get([x], (value) => {
                 resolve(value[x]);
@@ -25,20 +25,20 @@ export function SettingsModel() {
     }
 
     useEffect(() => {
-        getProperty("systemPrompt").then(setSystemPrompt);
-        getProperty("provider").then((storedProvider) => {
+        fetchProperty("systemPrompt").then(setSystemPrompt);
+        fetchProperty("provider").then((storedProvider) => {
             if (storedProvider === undefined) {
                 storedProvider = "OpenAI";
             }
             setProvider(storedProvider);
-            getProperty("key"+storedProvider).then(setKey);
+            fetchProperty("key"+storedProvider).then(setKey);
         });
     }, []);
 
     return {
-        systemPrompt, setSystemPrompt,
-        key, setKey,
         provider, setProvider,
-        getProperty, saveProperty
+        key, setKey,
+        systemPrompt, setSystemPrompt,
+        fetchProperty, storeProperty
     }
 }

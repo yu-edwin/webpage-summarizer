@@ -1,37 +1,33 @@
 import { SettingsModel } from "../model/SettingsModel.jsx"
 
 export function SettingsController() {
-    const {systemPrompt,
-            setSystemPrompt,
-            key,
+    const {setSystemPrompt,
             setKey,
-            provider,
             setProvider,
-            getProperty,
-            saveProperty} = SettingsModel();
+            fetchProperty,
+            storeProperty} = SettingsModel();
 
     const updateSystemPrompt = (newSystemPrompt) => {
         setSystemPrompt(newSystemPrompt);
-        saveProperty("systemPrompt", newSystemPrompt);
+        storeProperty("systemPrompt", newSystemPrompt);
     }
 
     const updateKey = (newKey) => {
         setKey(newKey);
-        saveProperty("key"+provider, newKey);
+        fetchProperty("provider").then((provider) => {
+            storeProperty("key"+provider, newKey);
+        });
     }
 
     const updateProvider = (newProvider) => {
         setProvider(newProvider);
-        saveProperty("provider", newProvider);
-        getProperty("key"+newProvider).then(setKey);
+        storeProperty("provider", newProvider);
+        fetchProperty("key"+newProvider).then(setKey);
     }
 
     return {
-        systemPrompt,
-        updateSystemPrompt,
-        provider,
         updateProvider,
-        key,
-        updateKey
+        updateKey,
+        updateSystemPrompt
     }
 }

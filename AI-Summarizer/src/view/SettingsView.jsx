@@ -1,4 +1,5 @@
 import { SettingsController } from "../controller/SettingsController.jsx"
+import { SettingsModel } from "../model/SettingsModel.jsx"
 
 
 function ProviderSelector({ value, update}) {
@@ -36,9 +37,12 @@ function SystemPromptInput({ value, update }) {
 
 
 export function SettingsView() {
-    const { systemPrompt, updateSystemPrompt,
-            provider, updateProvider,
-            key, updateKey} = SettingsController();
+    const { updateSystemPrompt,
+            updateProvider,
+            updateKey } = SettingsController();
+    const { provider,
+            key,
+            systemPrompt } = SettingsModel();
 
     return (
         <>
