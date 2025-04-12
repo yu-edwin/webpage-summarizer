@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 
 export function SettingsModel() {
-    // initializing provider, key, system propmts
     const [systemPrompt, setSystemPrompt] = useState("");
     const [key, setKey] = useState("");
     const [provider, setProvider] = useState("OpenAI");
@@ -10,7 +9,7 @@ export function SettingsModel() {
      * Saves given value to [x] within chrome.storage.sync
      */
     const saveProperty = (x, value) => {
-        chrome.storage.set({ [x]: value });
+        chrome.storage.sync.set({ [x]: value });
     }
 
     /**
@@ -26,15 +25,14 @@ export function SettingsModel() {
     }
 
     useEffect(() => {
-        // retrieve variables and initialize
-        // getProperty("SystemPrompt").then(setSystemPrompt);
-        // getProperty("provider").then((storedProvider) => {
-        //     if (storedProvider === undefined) {
-        //         storedProvider = "OpenAI"
-        //     }
-        //     setProvider(storedProvider);
-        //     getProperty("key" + storedProvider).then(setKey);
-        // });
+        getProperty("systemPrompt").then(setSystemPrompt);
+        getProperty("provider").then((storedProvider) => {
+            if (storedProvider === undefined) {
+                storedProvider = "OpenAI";
+            }
+            setProvider(storedProvider);
+            getProperty("key"+storedProvider).then(setKey);
+        });
     }, []);
 
     return {

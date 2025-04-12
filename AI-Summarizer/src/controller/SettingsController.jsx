@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { SettingsModel } from "../model/SettingsModel.jsx"
 
 export function SettingsController() {
@@ -11,29 +10,22 @@ export function SettingsController() {
             getProperty,
             saveProperty} = SettingsModel();
 
-    const updateSystemPrompt = (val) => {
-        setSystemPrompt(val);
-        chrome.storage.sync.set({ "systemPrompt": val });
+    const updateSystemPrompt = (newSystemPrompt) => {
+        setSystemPrompt(newSystemPrompt);
+        saveProperty("systemPrompt", newSystemPrompt);
     }
 
     const updateKey = (newKey) => {
         setKey(newKey);
-        chrome.storage.sync.set({ ["key"+provider]: newKey });
+        saveProperty("key"+provider, newKey);
     }
 
     const updateProvider = (newProvider) => {
         setProvider(newProvider);
-        chrome.storage.sync.set({ "provider": newProvider});
+        saveProperty("provider", newProvider);
         getProperty("key"+newProvider).then(setKey);
     }
 
-    useEffect(() => {
-        getProperty("systemPrompt").then(setSystemPrompt);
-        getProperty("provider").then((storedProvider) => {
-            setProvider(storedProvider);
-            getProperty("key"+storedProvider).then(setKey);
-        });
-    },[]);
     return {
         systemPrompt,
         updateSystemPrompt,
