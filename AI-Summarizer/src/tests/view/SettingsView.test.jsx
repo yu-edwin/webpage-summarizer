@@ -2,7 +2,7 @@ import React from "react";
 import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import { SettingsView } from "../../view/SettingsView.jsx";
 import { mockChromeStorageSync } from "../mockChrome.jsx";
-import { render, renderHook, screen, fireEvent} from "@testing-library/react";
+import { render, renderHook, screen, fireEvent, cleanup } from "@testing-library/react";
 
 describe("SettingsView", () => {
     //. loading mocked chrome
@@ -15,6 +15,7 @@ describe("SettingsView", () => {
     // clear storage before each test case
     beforeEach(() => {
         chrome.storage.sync.reset();
+        cleanup();
     });
 
     it("tests for the initial values, should be OpenAI as provider and blank elsewhere", () => {
@@ -24,10 +25,52 @@ describe("SettingsView", () => {
         expect(screen.getAllByRole("textbox")[1].value).toBe("");
     });
 
-    it("tests the ProviderSelector, checking before and after changing provider", () => {
+    it("tests the ProviderSelector, checking before after changing provider", () => {
         render(<SettingsView />);
+        const providerSelector = screen.getByRole("combobox");
+        expect(providerSelector.value).toBe("OpenAI");
 
-        // fireEvent.change();
+        fireEvent.change(providerSelector, { target: { value: 'Anthropic' } });
+        setTimeout(() => {
+            expect(providerSelector.value).toBe('Anthropic');
+        }, 50);
+    });
+
+    it("tests for KeyInput, checking before and after change", () => {
+        render(<SettingsView />);
+        const keyInput = screen.getAllByRole("textbox")[0];
+        expect(keyInput.value).toBe("");
+
+        fireEvent.change(keyInput, { target: { value: 'expected1' } });
+        setTimeout(() => {
+            expect(keyInput.value).toBe('expected1');
+        }, 50);
+    });
+
+    it("tests for systemPromptInput, checking before and after change", () => {
+        render(<SettingsView />);
+        const systemPromptInput = screen.getAllByRole("textbox")[1];
+        expect(systemPromptInput.value).toBe("");
+
+        fireEvent.change(systemPromptInput, { target: { value: 'expected1' } });
+        setTimeout(() => {
+            expect(systemPromptInput.value).toBe('expected1');
+        }, 50);
+    });
+
+    it("tests for changing provider and updating key functionality", () => {
+        render(<SettingsView />);
+        const providerSelector = screen.getByRole("combobox");
+        expect(providerSelector.value).toBe("OpenAI");
+        const keyInput = screen.getAllByRole("textbox")[0];
+        expect(keyInput.value).toBe("");
+
+        fireEvent.change(keyInput, { target: { value: 'expected1' } });
+        fireEvent.change(providerSelector, { target: { value: 'Anthropic' } });
+
+        setTimeout(() => {
+            expect(keyInput.value).toBe("");
+        });
     });
 });
 
