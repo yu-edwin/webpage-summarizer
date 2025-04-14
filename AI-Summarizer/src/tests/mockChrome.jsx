@@ -26,3 +26,16 @@ export const mockChromeStorageSync = {
         } 
     })
 }
+
+export const validWebsite = {
+    url: "https://en.wikipedia.org/wiki/React_(software)"
+}
+export const validVideo = {
+    url: "https://www.youtube.com/watch?v=GE-lAftuQgc"
+}
+export const invalidVideo = {
+    url: "https://www.youtube.com/watch?v=GE-lAftuQge"
+}
+export const invalidLink = {
+    url: "chrome://extensions/"
+}
