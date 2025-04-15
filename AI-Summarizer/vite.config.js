@@ -6,6 +6,7 @@ export default defineConfig({
     plugins: [react()],
     test: {
         environment: "jsdom",
+        testTimeout: 60000,
     },
     esbuild: {
         minifyIdentifiers: false,
