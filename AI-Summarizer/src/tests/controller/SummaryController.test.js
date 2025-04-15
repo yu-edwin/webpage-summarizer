@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import { SummaryController } from "../../controller/SummaryController.jsx";
 import { mockChromeStorageSync,
         validVideo,
@@ -11,7 +11,7 @@ describe("SummaryController", () => {
         global.chrome = {}
         global.chrome.storage = {}
         global.chrome.storage.sync = mockChromeStorageSync;
-        global.chrome.Tabs = {}
+        global.chrome.tabs = {}
     });
     
     // clear storage before each test case
@@ -20,20 +20,23 @@ describe("SummaryController", () => {
     });
     
     it("tests getting video url", () => {
+        global.chrome.tabs.query = (_, callback) => callback([validVideo]);
+        const callbackMock = vi.fn();
         var summaryController = renderHook(SummaryController);
-        global.chrome.Tabs.query = (_, callback) => callback([validVideo]);
 
-        expect(summaryController.result.getUrl()).toEqual(validVideo);
+        summaryController.result.current.getUrl(callbackMock);
+        expect(callbackMock).toHaveBeenCalledWith(validVideo.url);
+        
     });
 
     it("tests checking if link is a valid video with a real link", () => {
         var summaryController = renderHook(SummaryController);
-        expect(summaryController.result.isVideo(validVideo)).toEqual(true);
+        expect(summaryController.result.current.isVideo(validVideo)).toEqual(true);
     });
 
     it("tests checking if link is a valid video with a fake link", () => {
         var summaryController = renderHook(SummaryController);
-        expect(summaryController.result.isVideo(invalidVideo)).toEqual(false);
+        expect(summaryController.result.current.isVideo(invalidVideo)).toEqual(false);
     });
 
     it("tests the whole SummaryController, with a valid video", () => {
