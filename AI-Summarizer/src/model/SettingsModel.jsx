@@ -33,10 +33,7 @@ export function SettingsModel() {
     useEffect(() => {
         fetchProperty("systemPrompt").then(setSystemPrompt);
         fetchProperty("provider").then((storedProvider) => {
-            if (storedProvider === undefined) {
-                storedProvider = "OpenAI";
-            }
-            setProvider(storedProvider);
+            setProvider(storedProvider ?? "OpenAI");
             fetchProperty("key"+storedProvider).then(setKey);
         });
     }, []);

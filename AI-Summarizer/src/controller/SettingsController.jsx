@@ -1,11 +1,15 @@
 import { SettingsModel } from "../model/SettingsModel.jsx"
 
 export function SettingsController() {
-    const {setSystemPrompt,
-            setKey,
-            setProvider,
-            fetchProperty,
-            storeProperty} = SettingsModel();
+    const {
+        systemPrompt,
+        setSystemPrompt,
+        key,
+        setKey,
+        provider,
+        setProvider,
+        fetchProperty,
+        storeProperty} = SettingsModel();
 
     const updateSystemPrompt = (newSystemPrompt) => {
         setSystemPrompt(newSystemPrompt);
@@ -15,19 +19,22 @@ export function SettingsController() {
     const updateKey = (newKey) => {
         setKey(newKey);
         fetchProperty("provider").then((provider) => {
-            storeProperty("key"+provider, newKey);
+            storeProperty("key"+(provider ?? "OpenAI"), newKey);
         });
     }
 
-    const updateProvider = (newProvider) => {
+    const updateProvider = async (newProvider) => {
         setProvider(newProvider);
-        storeProperty("provider", newProvider);
-        fetchProperty("key"+newProvider).then(setKey);
+        storeProperty("provider", newProvider ?? "OpenAI");
+        setKey(await fetchProperty("key"+newProvider) ?? "");
     }
 
     return {
+        provider,
         updateProvider,
+        key,
         updateKey,
+        systemPrompt,
         updateSystemPrompt
     }
 }

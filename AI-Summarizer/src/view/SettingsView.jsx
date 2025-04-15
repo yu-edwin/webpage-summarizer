@@ -36,12 +36,9 @@ function SystemPromptInput({ value, update }) {
 }
 
 export function SettingsView() {
-    const { updateSystemPrompt,
-            updateProvider,
-            updateKey } = SettingsController();
-    const { provider,
-            key,
-            systemPrompt } = SettingsModel();
+    const { systemPrompt, updateSystemPrompt,
+            provider, updateProvider,
+            key, updateKey } = SettingsController();
 
     return (
         <>
