@@ -29,14 +29,14 @@ describe("SummaryController", () => {
         
     });
 
-    it("tests checking if link is a valid video with a real link", () => {
+    it("tests checking if link is a valid video with a real link", async () => {
         var summaryController = renderHook(SummaryController);
-        expect(summaryController.result.current.isVideo(validVideo)).toEqual(true);
+        expect(await summaryController.result.current.isVideo(validVideo.url)).toEqual(true);
     });
 
-    it("tests checking if link is a valid video with a fake link", () => {
+    it("tests checking if link is a valid video with a fake link", async () => {
         var summaryController = renderHook(SummaryController);
-        expect(summaryController.result.current.isVideo(invalidVideo)).toEqual(false);
+        expect(await summaryController.result.current.isVideo(invalidVideo.url)).toEqual(false);
     });
 
     it("tests the whole SummaryController, with a valid video", () => {
