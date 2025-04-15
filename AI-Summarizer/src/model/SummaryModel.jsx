@@ -5,7 +5,7 @@ import { SettingsModel } from "../model/SettingsModel.jsx";
 
 
 export function SummaryModel() {
-    const {provider, key, systemPrompt} = SettingsModel();
+    const {provider, key, systemPrompt, fetchProperty} = SettingsModel();
     const [url, setUrl] = useState(undefined)
     const [status, setStatus] = useState(undefined);
     const [summary, setSummary] = useState(undefined);
@@ -14,28 +14,48 @@ export function SummaryModel() {
 
 
     const getVideoSummary = async () => {
-        const genAI = new GoogleGenerativeAI(key);
-        const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-pro",
-            systemInstruction: {
-                parts: systemPrompt,
-                role: "model"
-            }
-        });
-        const result = await model.generateContent([
-            "Can you summarize this video?",
-            {
-                fileData: {
-                    fileUri: "https://www.youtube.com/watch?v=5zQ0WewZY50",
+        let model;
+        try {
+            let genAI;
+            await fetchProperty("keyGoogle").then((value) => {
+                genAI = new GoogleGenerativeAI(value);
+            });
+            await fetchProperty("systemPrompt").then((value) => {
+                model = genAI.getGenerativeModel({
+                    model: "gemini-2.0-flash",
+                    systemInstruction: {
+                        parts: [{ text: value}],
+                        role: "model"
+                    }
+                });
+            });
+        } catch {
+            setSummary(`Failed to configure!`);
+            return;
+        }
+
+        setSummary(`Generating summary ... `);
+        let result;
+        try {
+            result = await model.generateContent([
+                "Summarize this video: ",
+                {
+                    fileData: {
+                        fileUri: url,
+                    },
                 },
-            },
-        ]);
-        setSummary(result.response.text());
+            ]);
+        } catch {
+            setSummary(`Failed to generate video summary!`);
+            return;
+        }
+        setSummary(await result.response.text());
     }
 
     return {
         status, setStatus,
         summary, setSummary,
+        url, setUrl,
         getVideoSummary
     }
 }
