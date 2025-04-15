@@ -70,7 +70,7 @@ describe("SettingsView", () => {
 
         setTimeout(() => {
             expect(keyInput.value).toBe("");
-        });
+        }, 50);
     });
 });
 
