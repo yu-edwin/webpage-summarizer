@@ -33,10 +33,10 @@ function App() {
             <h1>AI summarizer</h1>
             <div className="card">
                 {tab === "settings" && <SettingsView />}
+                {tab === "summary" && <SummaryView />}
             </div>
         </>
     )
 }
 
 export default App
-                // {tab === "summary" && <SummaryView />}
