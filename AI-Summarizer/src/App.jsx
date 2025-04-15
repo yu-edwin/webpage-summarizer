@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { SettingsView } from "./view/SettingsView.jsx"
-
-const OutputTab = () => <div>OutputTab placeholder</div>;
-
+import { SummaryView } from "./view/SummaryView.jsx"
 
 function App() {
     const [tab, setTab] = useState("summary");
@@ -35,11 +33,10 @@ function App() {
             <h1>AI summarizer</h1>
             <div className="card">
                 {tab === "settings" && <SettingsView />}
-                {0 && tab === "summary" && <OutputTab />}
-
             </div>
         </>
     )
 }
 
 export default App
+                // {tab === "summary" && <SummaryView />}

@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react"
 
+/**
+ * store: saving to persistent storage
+ * fetch: load from persistent storage
+ * setters: sets variable within runtime
+ * getters (the properties themselves): gets variable within runtime 
+ */
 export function SettingsModel() {
     const [systemPrompt, setSystemPrompt] = useState("");
     const [key, setKey] = useState("");

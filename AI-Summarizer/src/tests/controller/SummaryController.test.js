@@ -42,7 +42,7 @@ describe("SummaryController", () => {
 
         expect(summaryController.result.current.status).toEqual(200);
         expect(summaryController.result.current.url).toEqual(validVideo);
-        expect(summaryController.result.current.response).toBeTypeOf("string");
+        expect(summaryController.result.current.summary).toBeTypeOf("string");
     });
 });
 

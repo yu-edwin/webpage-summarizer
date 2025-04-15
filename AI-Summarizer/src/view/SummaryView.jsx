@@ -1,13 +1,11 @@
 import { SummaryController } from "../controller/SummaryController.jsx"
 
 export function SummaryView() {
-    const {Summary} = SummaryController();
+    const { summary } = SummaryController();
     return (
-        <>
-            <div>
-                <Summary />
-            </div> 
-        </>
+        <div>
+            { summary }
+        </div> 
     )
 }
 

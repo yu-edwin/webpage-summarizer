@@ -35,7 +35,6 @@ function SystemPromptInput({ value, update }) {
     )
 }
 
-
 export function SettingsView() {
     const { updateSystemPrompt,
             updateProvider,
