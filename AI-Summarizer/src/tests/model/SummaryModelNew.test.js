@@ -43,7 +43,27 @@ describe("SummaryModel", () => {
         global.chrome.storage.sync.set({ systemPrompt: "Be verbose"});
     });
 
-    it("tests getting webpage summary with a valid webpage", async () => {
+    it("tests getting webpoge summary with a valid webpage using OpenAI", async () => {
+        var summaryModel = renderHook(SummaryModel);
+        summaryModel.result.current.setUrl(links.validWebsite);
+        await summaryModel.result.current.getSummaryOpenAI();
+        setTimeout(() => {
+            expect(mockOpenAI).toHaveBeenCalledWith("correct key");
+            expect(summaryModel.result.current.summary).toEqual("correct summary");
+        }, 50);
+    }, 200);
+
+    it("tests getting webpoge summary with an invalid webpage using OpenAI", async () => {
+        var summaryModel = renderHook(SummaryModel);
+        summaryModel.result.current.setUrl(links.invalidWebsite);
+        await summaryModel.result.current.getSummaryAnthropic();
+        setTimeout(() => {
+            expect(mockOpenAI).toHaveBeenCalledWith("correct key");
+            expect(summaryModel.result.current.summary).toEqual("wrong summary");
+        }, 50);
+    }, 200);
+
+    it("tests getting webpage summary with a valid webpage using Anthropic", async () => {
         var summaryModel = renderHook(SummaryModel);
         summaryModel.result.current.setUrl(links.validWebsite);
         await summaryModel.result.current.getSummaryAnthropic();
@@ -53,7 +73,7 @@ describe("SummaryModel", () => {
         }, 50);
     }, 200);
 
-    it("tests getting webpage summary with an inalid webpage", async () => {
+    it("tests getting webpage summary with an inalid webpage using Anthropic", async () => {
         var summaryModel = renderHook(SummaryModel);
         summaryModel.result.current.setUrl(links.invalidWebsite);
         await summaryModel.result.current.getSummaryAnthropic();

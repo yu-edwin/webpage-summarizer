@@ -27,7 +27,23 @@ export const mockChromeStorageSync = {
     })
 }
 
-export const mockOpenAI = () => {};
+export class mockOpenAI {
+    constructor(key) {
+        this.key = key.apiKey;
+        this.responses = {
+            create: async (input) => {
+                if (input
+                    && input.model
+                    && input.instructions
+                    && input.input) {
+                    return "correct summary";
+                } else {
+                    return "wrong summary";
+                }
+            }
+        }
+    }
+};
 
 /**
  * mocks Anthropic api calls
@@ -35,15 +51,15 @@ export const mockOpenAI = () => {};
  * and incorrect otherwise.
  */
 export class mockAnthropic {
-    constructor(apiKey) {
-        this.key = apiKey;
+    constructor(key) {
+        this.key = key.apiKey;
         this.messages = {
             create: async (input) => {
                 if (input
                     && input.model
                     && input.max_tokens
                     && input.system
-                    && input.messages != links.invalidWebsite
+                    && input.messages
                     && input.messages.role
                     && input.messages.content) {
                     return "correct summary";
@@ -62,7 +78,7 @@ export const mockGemini = () => {};
  */
 export class mockGoogle {
     constructor(key) {
-        this.key = apiKey;
+        this.key = key.apiKey;
         this.models = {
             generateContent: async (input) => {
                 if (input
