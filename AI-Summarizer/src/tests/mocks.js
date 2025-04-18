@@ -28,7 +28,32 @@ export const mockChromeStorageSync = {
 }
 
 export const mockOpenAI = () => {};
-export const mockAnthropic = () => {};
+
+/**
+ * mocks Anthropic api calls
+ * returns correct summary if given correct parameters
+ * and incorrect otherwise.
+ */
+export class mockAnthropic {
+    constructor(apiKey) {
+        this.key = apiKey;
+        this.messages = {
+            create: async (input) => {
+                if (input
+                    && input.model
+                    && input.max_tokens
+                    && input.system
+                    && input.messages != links.invalidWebsite
+                    && input.messages.role
+                    && input.messages.content) {
+                    return "correct summary";
+                } else {
+                    return "wrong summary";
+                }
+            }
+        }
+    }
+};
 export const mockGemini = () => {};
 
 /**

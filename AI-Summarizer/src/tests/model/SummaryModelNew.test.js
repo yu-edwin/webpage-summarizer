@@ -6,7 +6,8 @@ vi.mock("", async () =>{
     const mocks = await import("../mocks.js");
     return {
         GoogleGenAI: vi.fn().mockImplementation(() => new mocks.mockGoogle),
-        createPartFromUri: vi.fn().mockImplementation(mocks.mockCreatePartFromUri)
+        createPartFromUri: vi.fn().mockImplementation(mocks.mockCreatePartFromUri),
+        Anthropic: vi.fn().mockImplementation(() => new mocks.mockAnthropic),
     }
 });
 
@@ -41,6 +42,26 @@ describe("SummaryModel", () => {
         global.chrome.storage.sync.set({ keyGoogle: "correct key"});
         global.chrome.storage.sync.set({ systemPrompt: "Be verbose"});
     });
+
+    it("tests getting webpage summary with a valid webpage", async () => {
+        var summaryModel = renderHook(SummaryModel);
+        summaryModel.result.current.setUrl(links.validWebsite);
+        await summaryModel.result.current.getSummaryAnthropic();
+        setTimeout(() => {
+            expect(mockAnthropic).toHaveBeenCalledWith("correct key");
+            expect(summaryModel.result.current.summary).toEqual("correct summary");
+        }, 50);
+    }, 200);
+
+    it("tests getting webpage summary with an inalid webpage", async () => {
+        var summaryModel = renderHook(SummaryModel);
+        summaryModel.result.current.setUrl(links.invalidWebsite);
+        await summaryModel.result.current.getSummaryAnthropic();
+        setTimeout(() => {
+            expect(mockAnthropic).toHaveBeenCalledWith("correct key");
+            expect(summaryModel.result.current.summary).toEqual("wrong summary");
+        }, 50);
+    }, 200);
     
     it("tests getting video summary with a valid video", async () => {
         var summaryModel = renderHook(SummaryModel);
@@ -49,8 +70,7 @@ describe("SummaryModel", () => {
         setTimeout(() => {
             expect(mockGoogle).toHaveBeenCalledWith("correct key");
             expect(mockCreatePartFromUri).toHaveBeenCalledWith(links.shortVideo);
-            expect(summary).toHaveBeenCalledWith("correct summary");
-
+            expect(summaryModel.result.current.summary).toEqual("correct summary");
         }, 50);
     }, 200);
 
@@ -61,8 +81,7 @@ describe("SummaryModel", () => {
         setTimeout(() => {
             expect(mockGoogle).toHaveBeenCalledWith("correct key");
             expect(mockCreatePartFromUri).toHaveBeenCalledWith(links.illegalWebsite);
-            expect(summary).toHaveBeenCalledWith("wrong summary");
-
+            expect(summaryModel.result.current.summary).toEqual("wrong summary");
         }, 50);
     }, 200);
 });
