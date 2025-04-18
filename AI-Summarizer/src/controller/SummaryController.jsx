@@ -2,7 +2,6 @@ import { useEffect } from "react"
 import Antrhopic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { SummaryModel } from  "../model/SummaryModel.jsx";
-import { SettingsModel } from "../model/SettingsModel.jsx";
 
 export function SummaryController() {
     const { url, setUrl,
@@ -10,12 +9,13 @@ export function SummaryController() {
             getVideoSummary } = SummaryModel();
     useEffect(() => {
         getUrl((value) => {
-            // getSummary();
-            // setSummary(value);
+            setUrl(value);
         });
-        // getUrl().then(setUrl);
-        // getSummary(url);
     }, []);
+
+    useEffect(() => {
+        getSummary(url);
+    }, [url]);
 
     const getUrl = (callback) => {
         return chrome.tabs.query({active: true, currentWindow: true}, (out) => {
@@ -23,20 +23,34 @@ export function SummaryController() {
         });
     }
 
-    const isVideo = () => {
-        return true;
-        // TODO: some regex thing here
+    const isVideo = async (testUrl) => {
+        const youtube = /youtube\.com/;
+        if(youtube.test(testUrl)) {
+            try {
+                const response = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(testUrl)}`);
+                return response.ok;
+            } catch {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
     
+    const getWebpageContent = () => {}
     const getSummaryOpenAI = () => {}
     const getSummaryAnthropic = () => {}
     const getGoogleSummary = () => {}
 
-    const getSummary = () => {
-        if (isVideo(url)) {
-            getVideoSummary();
+    const getSummary = async () => {
+        if (await isVideo(url)) {
+            await getVideoSummary();
         }
     }
 
-    return { summary }
+    return {
+        summary,
+        getUrl,
+        isVideo
+    }
 }
