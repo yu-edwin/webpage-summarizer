@@ -7,6 +7,7 @@ vi.mock("", async () =>{
     return {
         GoogleGenAI: vi.fn().mockImplementation(() => new mocks.mockGoogle),
         createPartFromUri: vi.fn().mockImplementation(mocks.mockCreatePartFromUri),
+        OpenAI: vi.fn().mockImplementation(() => new mocks.mockOpenAI),
         Anthropic: vi.fn().mockImplementation(() => new mocks.mockAnthropic),
     }
 });
@@ -83,6 +84,26 @@ describe("SummaryModel", () => {
         }, 50);
     }, 200);
     
+    it("tests getting webpage summary with a valid webpage using Google", async () => {
+        var summaryModel = renderHook(SummaryModel);
+        summaryModel.result.current.setUrl(links.validWebsite);
+        await summaryModel.result.current.getSummaryGoogle();
+        setTimeout(() => {
+            expect(mockAnthropic).toHaveBeenCalledWith("correct key");
+            expect(summaryModel.result.current.summary).toEqual("correct summary");
+        }, 50);
+    }, 200);
+
+    it("tests getting webpage summary with an inalid webpage using Google", async () => {
+        var summaryModel = renderHook(SummaryModel);
+        summaryModel.result.current.setUrl(links.invalidWebsite);
+        await summaryModel.result.current.getSummaryGoogle();
+        setTimeout(() => {
+            expect(mockAnthropic).toHaveBeenCalledWith("correct key");
+            expect(summaryModel.result.current.summary).toEqual("wrong summary");
+        }, 50);
+    }, 200);
+
     it("tests getting video summary with a valid video", async () => {
         var summaryModel = renderHook(SummaryModel);
         summaryModel.result.current.setUrl(links.shortVideo);

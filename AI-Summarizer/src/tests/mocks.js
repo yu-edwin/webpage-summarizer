@@ -27,6 +27,11 @@ export const mockChromeStorageSync = {
     })
 }
 
+/**
+ * mocks OpenAI api calls
+ * returns correct summary if given correct parameters
+ * and wrong summary otherwise.
+ */
 export class mockOpenAI {
     constructor(key) {
         this.key = key.apiKey;
@@ -48,7 +53,7 @@ export class mockOpenAI {
 /**
  * mocks Anthropic api calls
  * returns correct summary if given correct parameters
- * and incorrect otherwise.
+ * and wrong summary otherwise.
  */
 export class mockAnthropic {
     constructor(key) {
@@ -70,10 +75,10 @@ export class mockAnthropic {
         }
     }
 };
-export const mockGemini = () => {};
+
 
 /**
- * mocks video summary api calls.
+ * mocks google api calls for both webpage and video summaries
  * returns the summary for videos under 1 hour and fails otherwise.
  */
 export class mockGoogle {
@@ -85,15 +90,17 @@ export class mockGoogle {
                     && input.model
                     && input.contents
                     && input.contents[0] // text part of prompt
-                    && input.contents[1] // video part of prompt
                 ) {
-                    return {
-                        text: "correct summary"
-                    }
-                } else {
-                    return {
-                        text: "wrong summary"
-                    }
+                    // no video content or link is from youtube
+                    if ((!input.contents[1])
+                        || (input.contents[1]
+                        && /youtube\.com/.test(input.contents[1]))) {
+                        return "correct summary"
+                    } 
+                }
+
+                return {
+                    text: "wrong summary"
                 }
             }
         }
