@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react"
 
 import { SettingsController } from "../controller/SettingsController.jsx"
-import { SettingsModel } from "../model/SettingsModel.jsx"
 
 
+/**
+ * View element for llm provider selector.
+ * @param {string} value: string representing the llm provider
+ * @param {Function} update: responsible for updating chrome storage
+ * @param {Function} set: setter method for value
+ * @param {Function} setApiKey: setter method for the new api key
+ * @return {JSX.element} llm provider selector element
+ */
 function ProviderSelector({ value, update, set, setApiKey }) {
     return (
         <select
@@ -20,7 +27,13 @@ function ProviderSelector({ value, update, set, setApiKey }) {
         </select>
     )
 }
-
+/**
+ * View element for api key input box.
+ * @param {string} value: string representing the api key
+ * @param {Function} update: responsible for updating chrome storage
+ * @param {Function} set: setter method for value
+ * @return {JSX.element} key input box element
+ */
 function KeyInput({ value, update, set }) {
     return (
         <input
@@ -34,6 +47,13 @@ function KeyInput({ value, update, set }) {
     )
 }
 
+/**
+ * View element for system prompt input box.
+ * @param {string} value: string representing the system prompt
+ * @param {Function} update: responsible for updating chrome storage
+ * @param {Function} set: setter method for value
+ * @return {JSX.element} system prompt input box element
+ */
 function SystemPromptInput({ value, update, set }) {
     return (
         <input
@@ -48,13 +68,7 @@ function SystemPromptInput({ value, update, set }) {
 }
 
 export function SettingsView() {
-    // const { systemPrompt, updateSystemPrompt,
-    //         provider, updateProvider,
-    //         key, updateKey } = SettingsController();
-    const { updateSystemPrompt,
-            updateProvider,
-            updateKey,
-            getInitialValues } = SettingsController();
+    const settingsController = new SettingsController();
 
     const [ provider, setProvider ] = useState("OpenAI");
     const [ apiKey, setApiKey ] = useState("");
@@ -62,7 +76,7 @@ export function SettingsView() {
     
     useEffect(() => {
         (async () => {
-            const { initialProvider, initialApiKey, initialSystemPrompt } = await getInitialValues();
+            const { initialProvider, initialApiKey, initialSystemPrompt } = await settingsController.getInitialValues();
             setProvider(initialProvider);
             setApiKey(initialApiKey);
             setSystemPrompt(initialSystemPrompt);
@@ -75,7 +89,7 @@ export function SettingsView() {
             <div>
                 <ProviderSelector
                     value={provider}
-                    update={updateProvider}
+                    update={settingsController.updateProvider}
                     set={setProvider}
                     setApiKey={setApiKey}
                 />
@@ -83,14 +97,14 @@ export function SettingsView() {
             <div>
                 <KeyInput
                     value={apiKey}
-                    update={updateKey}
+                    update={settingsController.updateKey}
                     set={setApiKey}
                 />
             </div>
             <div>
                 <SystemPromptInput
                     value={systemPrompt}
-                    update={updateSystemPrompt}
+                    update={settingsController.updateSystemPrompt}
                     set={setSystemPrompt}
                 />
             </div>

@@ -1,77 +1,58 @@
 import { SettingsModel } from "../model/SettingsModel.jsx"
 
-export function SettingsController() {
-    const {
-        fetchProperty,
-        storeProperty} = SettingsModel();
 
-    const updateSystemPrompt = (newSystemPrompt) => {
-        storeProperty("systemPrompt", newSystemPrompt);
+/**
+ * Controller class for settings.
+ * Responsible for updating and retrieving values in
+ * user's associated chrome storage.
+ */
+export class SettingsController{
+    constructor() {
+        this.settingsModel = new SettingsModel();
+    };
+
+    /**
+     * Updates user's system prompt in their chrome storage.
+     * @param {string} newSystemPrompt: new user system prompt
+     */
+    updateSystemPrompt = (newSystemPrompt) => {
+        this.settingsModel.storeProperty("systemPrompt", newSystemPrompt);
     }
 
-    const updateKey = (newApiKey) => {
-        fetchProperty("provider").then((provider) => {
-            storeProperty("apiKey"+(provider ?? "OpenAI"), newApiKey);
+    /**
+     * Updates user's system prompt in their chrome storage.
+     * @param {string} newApiKey: newly given api key
+     */
+    updateKey = (newApiKey) => {
+        this.settingsModel.fetchProperty("provider").then((provider) => {
+            this.settingsModel.storeProperty("apiKey"+(provider ?? "OpenAI"), newApiKey);
         });
     }
 
-    const updateProvider = async (newProvider) => {
-        storeProperty("provider", newProvider ?? "OpenAI");
-        return (await fetchProperty("apiKey" + newProvider) ?? "");
+    /**
+     * Asynchronously updates user's system prompt in their chrome storage.
+     * @param {string} newProvider: newly selected provider
+     * @return {string} previously used api for the new provider, "" if not found
+     */
+    updateProvider = async (newProvider) => {
+        this.settingsModel.storeProperty("provider", newProvider ?? "OpenAI");
+        return (await this.settingsModel.fetchProperty("apiKey" + newProvider) ?? "");
     }
     
-    const getInitialValues = async () => {
-        const provider = await fetchProperty("provider") ?? "OpenAI";
-        const apiKey = await fetchProperty("apiKey" + provider) ?? "";
-        const systemPrompt = await fetchProperty("systemPrompt") ?? "";
+    /**
+     * Asynchronously retrieves user's data from previous sessions (if any).
+     * @return {string} initialProvider: previously used provider, "OpenAI" if not found
+     * @return {string} initialApiKey: previous used api key, "" if not found
+     * @return {string} initialSystemPrompt: previously used system prompt, "" if not found
+     */
+    getInitialValues = async () => {
+        const provider = await this.settingsModel.fetchProperty("provider") ?? "OpenAI";
+        const apiKey = await this.settingsModel.fetchProperty("apiKey" + provider) ?? "";
+        const systemPrompt = await this.settingsModel.fetchProperty("systemPrompt") ?? "";
         return {
             initialProvider: provider,
             initialApiKey: apiKey,
             initialSystemPrompt: systemPrompt
         }
     }
-    return {
-        updateProvider,
-        updateKey,
-        updateSystemPrompt,
-        getInitialValues
-    }
 }
-// export function SettingsController() {
-//     const {
-//         systemPrompt,
-//         setSystemPrompt,
-//         key,
-//         setKey,
-//         provider,
-//         setProvider,
-//         fetchProperty,
-//         storeProperty} = SettingsModel();
-
-//     const updateSystemPrompt = (newSystemPrompt) => {
-//         setSystemPrompt(newSystemPrompt);
-//         storeProperty("systemPrompt", newSystemPrompt);
-//     }
-
-//     const updateKey = (newKey) => {
-//         setKey(newKey);
-//         fetchProperty("provider").then((provider) => {
-//             storeProperty("key"+(provider ?? "OpenAI"), newKey);
-//         });
-//     }
-
-//     const updateProvider = async (newProvider) => {
-//         setProvider(newProvider);
-//         storeProperty("provider", newProvider ?? "OpenAI");
-//         setKey(await fetchProperty("key"+newProvider) ?? "");
-//     }
-
-//     return {
-//         provider,
-//         updateProvider,
-//         key,
-//         updateKey,
-//         systemPrompt,
-//         updateSystemPrompt
-//     }
-// }

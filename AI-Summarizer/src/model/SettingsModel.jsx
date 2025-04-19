@@ -1,22 +1,24 @@
 
 /**
- * store: saving to persistent storage
- * fetch: load from persistent storage
+ * Model class for settings.
+ * Responsible for fetching and storing
+ * values to the chrome.storage api.
  */
-export function SettingsModel() {
-
+export class SettingsModel{
     /**
      * stores given value to [x] within chrome.storage.sync
+     * @param {string} x: key to store to
+     * @param {string} value: value to store with
      */
-    const storeProperty = (x, value) => {
+    storeProperty = (x, value) => {
         chrome.storage.sync.set({ [x]: value });
     }
 
     /**
      * Retrieves any previously stored variable from chrome.stroage.sync
-     * If property is not found, it defaults to "".
+     * @param {string} x: key to the stored property, "" if not found
      */
-    const fetchProperty = (x) => {
+    fetchProperty = (x) => {
         return new Promise((resolve) => {
             chrome.storage.sync.get([x], (value) => {
                 resolve(value[x]);
@@ -24,61 +26,4 @@ export function SettingsModel() {
         });
     }
 
-    // useEffect(() => {
-    //     fetchProperty("systemPrompt").then(setSystemPrompt);
-    //     fetchProperty("provider").then((storedProvider) => {
-    //         setProvider(storedProvider ?? "OpenAI");
-    //         fetchProperty("key"+storedProvider).then(setKey);
-    //     });
-    // }, []);
-
-    return {
-        fetchProperty,
-        storeProperty
-    }
 }
-// /**
-//  * store: saving to persistent storage
-//  * fetch: load from persistent storage
-//  * setters: sets variable within runtime
-//  * getters (the properties themselves): gets variable within runtime 
-//  */
-// export function SettingsModel() {
-//     const [systemPrompt, setSystemPrompt] = useState("");
-//     const [key, setKey] = useState("");
-//     const [provider, setProvider] = useState("OpenAI");
-
-//     /**
-//      * stores given value to [x] within chrome.storage.sync
-//      */
-//     const storeProperty = (x, value) => {
-//         chrome.storage.sync.set({ [x]: value });
-//     }
-
-//     /**
-//      * Retrieves any previously stored variable from chrome.stroage.sync
-//      * If property is not found, it defaults to "".
-//      */
-//     const fetchProperty = (x) => {
-//         return new Promise((resolve) => {
-//             chrome.storage.sync.get([x], (value) => {
-//                 resolve(value[x]);
-//             });
-//         });
-//     }
-
-//     useEffect(() => {
-//         fetchProperty("systemPrompt").then(setSystemPrompt);
-//         fetchProperty("provider").then((storedProvider) => {
-//             setProvider(storedProvider ?? "OpenAI");
-//             fetchProperty("key"+storedProvider).then(setKey);
-//         });
-//     }, []);
-
-//     return {
-//         provider, setProvider,
-//         key, setKey,
-//         systemPrompt, setSystemPrompt,
-//         fetchProperty, storeProperty
-//     }
-// }
