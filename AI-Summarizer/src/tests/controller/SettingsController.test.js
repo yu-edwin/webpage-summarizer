@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import { SettingsController } from "../../controller/SettingsController.jsx";
 import { mockChromeStorageSync } from "../mockChrome.jsx";
-import { render, renderHook, screen } from "@testing-library/react";
 
 describe("SettingsController", () => {
     //. loading mocked chrome
@@ -16,20 +15,37 @@ describe("SettingsController", () => {
         chrome.storage.sync.reset();
     });
 
+    it("tests getInitialValues, stores values then calls on getInitialValues", async () => {
+        chrome.storage.sync.set({ apiKeyGoogle: "correct key" });
+        chrome.storage.sync.set({ apiKeyOpenAI: "incorrect key" });
+        chrome.storage.sync.set({ apiKeyAnthropic: "incorrect key" });
+        chrome.storage.sync.set({ provider: "Google" });
+        chrome.storage.sync.set({ systemPrompt: "correct system prompt" });
+        const settingsController = new SettingsController();
+
+        const { initialProvider,
+                initialApiKey,
+                initialSystemPrompt } = await settingsController.getInitialValues();
+        expect(initialProvider).toEqual("Google");
+        expect(initialSystemPrompt).toEqual("correct system prompt");
+        expect(initialApiKey).toEqual("correct key");
+
+    });
+
     it("tests updateSystemPrompt, checks initial, then updates system prompt twice", () => {
-        var settingsController = renderHook(SettingsController);
+       const settingsController = new SettingsController();
         setTimeout(() => {
             chrome.storage.sync.get(["systemPrompt"], (value) => {
                 expect(value["systemPrompt"]).toBeUndefined();
             });
         }, 50);
-        settingsController.result.current.updateSystemPrompt("expected1");
+        settingsController.updateSystemPrompt("expected1");
         setTimeout(() => {
             chrome.storage.sync.get(["systemPrompt"], (value) => {
                 expect(value["systemPrompt"]).toBe("expected1");
             });
         }, 50);
-        settingsController.result.current.updateSystemPrompt("expected2");
+        settingsController.updateSystemPrompt("expected2");
         setTimeout(() => {
             chrome.storage.sync.get(["systemPrompt"], (value) => {
                 expect(value["systemPrompt"]).toBe("expected2");
@@ -38,14 +54,14 @@ describe("SettingsController", () => {
     });
 
     it("tests updateSystemPrompt, updates system prompt once then update a different property", () => {
-        var settingsController = renderHook(SettingsController);
-        settingsController.result.current.updateSystemPrompt("expected1");
+        const settingsController = new SettingsController();
+        settingsController.updateSystemPrompt("expected1");
         setTimeout(() => {
             chrome.storage.sync.get(["systemPrompt"], (value) => {
                 expect(value["systemPrompt"]).toBe("expected1");
             });
         }, 50);
-        settingsController.result.current.updateProvider("expected2");
+        settingsController.updateProvider("expected2");
         setTimeout(() => {
             chrome.storage.sync.get(["systemPrompt"], (value) => {
                 expect(value["systemPrompt"]).toBe("expected1");
@@ -54,21 +70,21 @@ describe("SettingsController", () => {
     });
 
     it("tests updateKey, checks inital, then updates provider twice", () => {
-        var settingsController = renderHook(SettingsController);
+        const settingsController = new SettingsController();
         setTimeout(() => {
             chrome.storage.sync.get(["provider"], (value) => {
                 expect(value["provider"]).toBeUndefined();
             });
         }, 50);
 
-        settingsController.result.current.updateProvider("Anthropic");
+        settingsController.updateProvider("Anthropic");
         setTimeout(() => {
             chrome.storage.sync.get(["provider"], (value) => {
                 expect(value["provider"]).toBe("Anthropic");
             });
         }, 50);
 
-        settingsController.result.current.updateProvider("Google");
+        settingsController.updateProvider("Google");
         setTimeout(() => {
             chrome.storage.sync.get(["provider"], (value) => {
                 expect(value["provider"]).toBe("Google");
@@ -77,15 +93,15 @@ describe("SettingsController", () => {
     });
 
     it("tests updateKey, updates provider once then update a different property", () => {
-        var settingsController = renderHook(SettingsController);
-        settingsController.result.current.updateProvider("Anthropic");
+        const settingsController = new SettingsController();
+        settingsController.updateProvider("Anthropic");
         setTimeout(() => {
             chrome.storage.sync.get(["provider"], (value) => {
                 expect(value["provider"]).toBe("Anthropic");
             });
         }, 50);
 
-        settingsController.result.current.updateSystemPrompt("placeholder");
+        settingsController.updateSystemPrompt("placeholder");
         setTimeout(() => {
             chrome.storage.sync.get(["provider"], (value) => {
                 expect(value["provider"]).toBe("Anthropic");
@@ -93,17 +109,17 @@ describe("SettingsController", () => {
         }, 50);
     });
     it("tests updateProvider, updates same key twice", async () => {
-        var settingsController = renderHook(SettingsController);
-        settingsController.result.current.updateProvider("Anthropic");
+        const settingsController = new SettingsController();
+        settingsController.updateProvider("Anthropic");
 
-        settingsController.result.current.updateKey("expected1");
+        settingsController.updateKey("expected1");
         setTimeout(() => {
             chrome.storage.sync.get(["keyAnthropic"], (value) => {
                 expect(value["keyAnthropic"]).toBe("expected1");
             });
         }, 50);
 
-        settingsController.result.current.updateKey("expected2");
+        settingsController.updateKey("expected2");
         setTimeout(() => {
             chrome.storage.sync.get(["keyAnthropic"], (value) => {
                 expect(value["KeyAnthropic"]).toBe("expected2");
@@ -111,11 +127,11 @@ describe("SettingsController", () => {
         }, 50);
     });
     it("tests updateProvider, updates keys for 2 different providers", () => {
-        var settingsController = renderHook(SettingsController);
-        settingsController.result.current.updateProvider("Anthropic");
-        settingsController.result.current.updateKey("expected1");
-        settingsController.result.current.updateProvider("Google");
-        settingsController.result.current.updateKey("expected2");
+        const settingsController = new SettingsController();
+        settingsController.updateProvider("Anthropic");
+        settingsController.updateKey("expected1");
+        settingsController.updateProvider("Google");
+        settingsController.updateKey("expected2");
 
         setTimeout(() => {
             chrome.storage.sync.get(["keyAnthropic"], (value) => {
