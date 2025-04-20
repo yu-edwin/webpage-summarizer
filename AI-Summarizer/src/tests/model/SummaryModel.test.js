@@ -5,6 +5,7 @@ vi.mock("openai", async () =>{
     const mocks = await import("../mocks.js");
     return {
         OpenAI: vi.fn().mockImplementation((param) => new mocks.mockOpenAI(param)),
+        default:  vi.fn().mockImplementation((param) => new mocks.mockOpenAI(param))
     }
 });
 vi.mock("@anthropic-ai/sdk", async () =>{
@@ -27,9 +28,6 @@ import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { links,
         keys,
-        mockOpenAI, // openai mock
-        mockAnthropic, // Anthropic mock
-        mockGoogle, // GoogleGenAI mock
         } from "../mocks.js";
 
 
@@ -41,32 +39,32 @@ import { links,
  * getting web summary with Google,
  */
 describe("SummaryModel", () => {
-    // it("tests getting webpage summary with valid webpage and valid key using OpenAI", async () => {
-    //     const summaryModel = new SummaryModel();
-    //     const summary = await summaryModel.getSummaryOpenAI("correct input", keys.valid);
-    //     setTimeout(() => {
-    //         expect(mockOpenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid });
-    //         expect(summary).toEqual("correct summary");
-    //     }, 50);
-    // });
+    it("tests getting webpage summary with valid webpage and valid key using OpenAI", async () => {
+        const summaryModel = new SummaryModel();
+        const summary = await summaryModel.getSummaryOpenAI("correct input", keys.valid, "");
+        expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid });
+        expect(summary).toEqual("correct summary");
+    });
 
-    // it("tests getting webpage summary with  invalid key using OpenAI", async () => {
-    //     const summaryModel = new SummaryModel();
-    //     const summary = await summaryModel.getSummaryOpenAI("correct input", keys.invalid);
-    //     setTimeout(() => {
-    //         expect(mockOpenAI).toHaveBeenLastCalledWith({ apiKey: keys.invalid });
-    //         expect(summary).toEqual("Failed to configure!");
-    //     }, 50);
-    // });
+    it("tests getting webpage summary with invalid key using OpenAI", async () => {
+        const summaryModel = new SummaryModel();
+        const summary = await summaryModel.getSummaryOpenAI("correct input", keys.invalid, "");
+        expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.invalid });
+        expect(summary).toEqual("Failed to generate webpage summary!");
+    });
 
-    // it("tests getting webpage summary with invalid webpage using OpenAI", async () => {
-    //     const summaryModel = new SummaryModel();
-    //     const summary = await summaryModel.getSummaryOpenAI(links.invalidWebsite, keys.valid);
-    //     setTimeout(() => {
-    //         expect(mockOpenAI).toHaveBeenLastCalledWith({ apiKey: keys.invalid });
-    //         expect(summary).toEqual("Failed to generate video summary!");
-    //     }, 50);
-    // });
+    it("tests getting webpage summary with missing key using OpenAI", async () => {
+        const summaryModel = new SummaryModel();
+        const summary = await summaryModel.getSummaryOpenAI("correct input", keys.missing, "");
+        expect(summary).toEqual("Missing API key!");
+    });
+
+    it("tests getting webpage summary with invalid webpage using OpenAI", async () => {
+        const summaryModel = new SummaryModel();
+        const summary = await summaryModel.getSummaryOpenAI(links.invalidWebsite, keys.valid, "");
+        expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid });
+        expect(summary).toEqual("Failed to generate webpage summary!");
+    });
 
 
     

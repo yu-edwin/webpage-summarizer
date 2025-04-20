@@ -37,14 +37,17 @@ export class mockOpenAI {
         this.key = key.apiKey;
         this.responses = {
             create: async (input) => {
-                if (input
+                if (
+                    this.key === keys.valid
+                    && input
                     && input.model
                     && input.instructions
-                    && input.input) {
-                    return "correct summary";
-                } else {
-                    return "wrong summary";
+                    && input.input === "correct input") {
+                    return {
+                        output_text: "correct summary"
+                    }
                 }
+                throw 400;
             }
         }
     }
@@ -68,7 +71,6 @@ export class mockAnthropic {
                     && input.messages
                     && input.messages[0].role
                     && input.messages[0].content === "correct input") {
-                    console.log("returning correct summary");
                     return {
                         content: [{
                             text: "correct summary"
