@@ -10,7 +10,7 @@ export class SummaryModel {
     getSummaryGoogle = async () => {}
     getSummaryVideo = async (url, apiKey, systemPrompt) => {
         if (!apiKey) {
-            return "Failed to configure!";
+            return "Missing API key!";
         }
 
         let genAI;
@@ -34,7 +34,7 @@ export class SummaryModel {
                 }
             });
         } catch {
-            return "Failed to generate video summarry!";
+            return "Failed to generate video summary!";
         }
 
         return result.text;
