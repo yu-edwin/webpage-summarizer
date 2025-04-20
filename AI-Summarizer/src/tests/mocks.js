@@ -27,6 +27,40 @@ export const mockChromeStorageSync = {
     })
 }
 
+export const mockChrome = {
+    storage: {
+        sync: {
+            "get": vi.fn((keys, callback) => {
+                const out = {}
+                for (const key of keys) {
+                    out[key] = storage[key];
+                }
+                callback(out);
+            }),
+            "set": vi.fn((dict) => {
+                for (const key in dict) {
+                    storage[key] = dict[key];
+                }
+            }),
+            "reset": vi.fn(() => {
+                for (const key in storage) {
+                    delete storage[key];
+                } 
+            })
+        }
+    },
+    tabs: {},
+    scripting: {
+        executeScript: vi.fn().mockImplementation(({target, func}) => {
+            if (!target.tabId) {
+                return Promise.resolve([{ result: "wrong input" }])
+            } else{
+                return Promise.resolve([{ result: "correct input" }])
+            }
+        })
+    }
+}
+
 /**
  * mocks OpenAI api calls
  * returns correct summary if given correct parameters
