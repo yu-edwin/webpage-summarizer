@@ -60,17 +60,22 @@ export class mockAnthropic {
         this.key = key.apiKey;
         this.messages = {
             create: async (input) => {
-                if (input
+                if (this.key === keys.valid
+                    && input
                     && input.model
                     && input.max_tokens
                     && input.system
                     && input.messages
-                    && input.messages.role
-                    && input.messages.content) {
-                    return "correct summary";
-                } else {
-                    return "wrong summary";
+                    && input.messages[0].role
+                    && input.messages[0].content === "correct input") {
+                    console.log("returning correct summary");
+                    return {
+                        content: [{
+                            text: "correct summary"
+                        }]
+                    }
                 }
+                throw 400;
             }
         }
     }

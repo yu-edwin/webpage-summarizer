@@ -1,17 +1,30 @@
 import { describe, it, expect, beforeAll, beforeEach, vi} from "vitest";
 
 // mocking implementations for OpenAI, Anthropic, Google
+vi.mock("openai", async () =>{
+    const mocks = await import("../mocks.js");
+    return {
+        OpenAI: vi.fn().mockImplementation((param) => new mocks.mockOpenAI(param)),
+    }
+});
+vi.mock("@anthropic-ai/sdk", async () =>{
+    const mocks = await import("../mocks.js");
+    return {
+        Anthropic: vi.fn().mockImplementation((param) => new mocks.mockAnthropic(param)),
+        default: vi.fn().mockImplementation((param) => new mocks.mockAnthropic(param))
+    }
+});
 vi.mock("@google/genai", async () =>{
     const mocks = await import("../mocks.js");
     return {
         GoogleGenAI: vi.fn().mockImplementation((param) => new mocks.mockGoogle(param)),
-        OpenAI: vi.fn().mockImplementation(() => new mocks.mockOpenAI),
-        Anthropic: vi.fn().mockImplementation(() => new mocks.mockAnthropic),
     }
 });
 
 import { SummaryModel } from "../../model/SummaryModel.jsx";
 import { GoogleGenAI } from "@google/genai";
+import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { links,
         keys,
         mockOpenAI, // openai mock
@@ -30,18 +43,18 @@ import { links,
 describe("SummaryModel", () => {
     // it("tests getting webpage summary with valid webpage and valid key using OpenAI", async () => {
     //     const summaryModel = new SummaryModel();
-    //     const summary = await summaryModel.getSummaryOpenAI(links.validWebsite, keys.valid);
+    //     const summary = await summaryModel.getSummaryOpenAI("correct input", keys.valid);
     //     setTimeout(() => {
-    //         expect(mockOpenAI).toHaveBeenCalledWith({ apiKey: keys.valid });
+    //         expect(mockOpenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid });
     //         expect(summary).toEqual("correct summary");
     //     }, 50);
     // });
 
     // it("tests getting webpage summary with  invalid key using OpenAI", async () => {
     //     const summaryModel = new SummaryModel();
-    //     const summary = await summaryModel.getSummaryOpenAI(links.validWebsite, keys.invalid);
+    //     const summary = await summaryModel.getSummaryOpenAI("correct input", keys.invalid);
     //     setTimeout(() => {
-    //         expect(mockOpenAI).toHaveBeenCalledWith({ apiKey: keys.invalid });
+    //         expect(mockOpenAI).toHaveBeenLastCalledWith({ apiKey: keys.invalid });
     //         expect(summary).toEqual("Failed to configure!");
     //     }, 50);
     // });
@@ -50,7 +63,7 @@ describe("SummaryModel", () => {
     //     const summaryModel = new SummaryModel();
     //     const summary = await summaryModel.getSummaryOpenAI(links.invalidWebsite, keys.valid);
     //     setTimeout(() => {
-    //         expect(mockOpenAI).toHaveBeenCalledWith({ apiKey: keys.invalid });
+    //         expect(mockOpenAI).toHaveBeenLastCalledWith({ apiKey: keys.invalid });
     //         expect(summary).toEqual("Failed to generate video summary!");
     //     }, 50);
     // });
@@ -59,50 +72,46 @@ describe("SummaryModel", () => {
     
 
 
-    // it("tests getting webpage summary with valid webpage and valid key using Anthropic", async () => {
-    //     const summaryModel = new SummaryModel();
-    //     const summary = await summaryModel.getSummaryAnthropic(links.validWebsite, keys.valid);
-    //     setTimeout(() => {
-    //         expect(mockAnthropic).toHaveBeenCalledWith({ apiKey: keys.valid });
-    //         expect(summary).toEqual("correct summary");
-    //     }, 50);
-    // });
+    it("tests getting webpage summary with valid webpage and valid key using Anthropic", async () => {
+        const summaryModel = new SummaryModel();
+        const summary = await summaryModel.getSummaryAnthropic("correct input", keys.valid, "");
+        expect(Anthropic).toHaveBeenLastCalledWith({ apiKey: keys.valid });
+        expect(summary).toEqual("correct summary");
+    });
 
-    // it("tests getting webpage summary with  invalid key using Anthropic", async () => {
-    //     const summaryModel = new SummaryModel();
-    //     const summary = await summaryModel.getSummaryAnthropic(links.validWebsite, keys.invalid);
-    //     setTimeout(() => {
-    //         expect(mockAnthropic).toHaveBeenCalledWith({ apiKey: keys.invalid });
-    //         expect(summary).toEqual("Failed to configure!");
-    //     }, 50);
-    // });
+    it("tests getting webpage summary with invalid key using Anthropic", async () => {
+        const summaryModel = new SummaryModel();
+        const summary = await summaryModel.getSummaryAnthropic("correct input", keys.invalid, "");
+        expect(Anthropic).toHaveBeenLastCalledWith({ apiKey: keys.invalid });
+        expect(summary).toEqual("Failed to generate webpage summary!");
+    });
 
-    // it("tests getting webpage summary with invalid webpage using Anthropic", async () => {
-    //     const summaryModel = new SummaryModel();
-    //     const summary = await summaryModel.getSummaryAnthropic(links.invalidWebsite, keys.valid);
-    //     setTimeout(() => {
-    //         expect(mockAnthropic).toHaveBeenCalledWith({ apiKey: keys.invalid });
-    //         expect(summary).toEqual("Failed to generate video summary!");
-    //     }, 50);
-    // });
-    
+    it("tests getting webpage summary with missing key using Anthropic", async () => {
+        const summaryModel = new SummaryModel();
+        const summary = await summaryModel.getSummaryAnthropic("correct input", keys.missing, "");
+        expect(summary).toEqual("Missing API key!");
+    });
 
-
-
+    it("tests getting webpage summary with invalid webpage using Anthropic", async () => {
+        const summaryModel = new SummaryModel();
+        const summary = await summaryModel.getSummaryAnthropic("wrong input", keys.valid, "");
+        expect(Anthropic).toHaveBeenLastCalledWith({ apiKey: keys.valid });
+        expect(summary).toEqual("Failed to generate webpage summary!");
+    });
 
 
     it("tests getting webpage summary with valid webpage and valid key using Google", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryGoogle("correct input", keys.valid, "");
-        expect(GoogleGenAI).toHaveBeenCalledWith({ apiKey: keys.valid });
+        expect(GoogleGenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid });
         expect(summary).toEqual("correct summary");
     });
 
     it("tests getting webpage summary with invalid key using Google", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryGoogle("correct input", keys.invalid, "");
-        expect(GoogleGenAI).toHaveBeenCalledWith({ apiKey: keys.invalid });
-        expect(summary).toEqual("Failed to generate video summary!");
+        expect(GoogleGenAI).toHaveBeenLastCalledWith({ apiKey: keys.invalid });
+        expect(summary).toEqual("Failed to generate webpage summary!");
     });
 
     it("tests getting webpage summary with missing key using Google", async () => {
@@ -114,11 +123,9 @@ describe("SummaryModel", () => {
     it("tests getting webpage summary with invalid webpage using Google", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryGoogle("wrong input", keys.valid, "");
-        expect(GoogleGenAI).toHaveBeenCalledWith({ apiKey: keys.invalid });
-        expect(summary).toEqual("Failed to generate video summary!");
+        expect(GoogleGenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid });
+        expect(summary).toEqual("Failed to generate webpage summary!");
     });
-
-
 
 
     it("tests getting video summary with valid link and valid key", async () => {
