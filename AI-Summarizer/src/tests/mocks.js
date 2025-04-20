@@ -82,26 +82,34 @@ export class mockAnthropic {
  * returns the summary for videos under 1 hour and fails otherwise.
  */
 export class mockGoogle {
-    constructor(key) {
-        this.key = key.apiKey;
+    constructor(param) {
+        this.key = param.apiKey;
         this.models = {
             generateContent: async (input) => {
-                if (input
+                if (!this.key) {
+                    throw 403;
+                }
+                if (this.key === keys.valid
+                    && input
                     && input.model
                     && input.config
-                    && input.config.systemInsturction
+                    && input.config.systemInstruction
                     && input.contents
                     && ((typeof input.contents === "string" && input.contents === "correct input")
                         || input.contents.fileData.fileUri === links.validVideo)) {
                         return { text: "correct summary" };
                     }
 
-                return {
-                    text: "wrong summary"
-                }
+                throw 400;
             }
         }
     }
+}
+
+export const keys = {
+    valid: "valid",
+    invalid: "invalid",
+    missing: ""
 }
 
 export const links = {
