@@ -88,16 +88,13 @@ export class mockGoogle {
             generateContent: async (input) => {
                 if (input
                     && input.model
+                    && input.config
+                    && input.config.systemInsturction
                     && input.contents
-                    && input.contents[0] // text part of prompt
-                ) {
-                    // no video content or link is from youtube
-                    if ((!input.contents[1])
-                        || (input.contents[1]
-                        && /youtube\.com/.test(input.contents[1]))) {
-                        return "correct summary"
-                    } 
-                }
+                    && ((typeof input.contents === "string" && input.contents === "correct input")
+                        || input.contents.fileData.fileUri === links.validVideo)) {
+                        return { text: "correct summary" };
+                    }
 
                 return {
                     text: "wrong summary"
@@ -106,15 +103,12 @@ export class mockGoogle {
         }
     }
 }
-export const mockCreatePartFromUri = (url) => {
-    return true;
-
-}
 
 export const links = {
     illegalWebsite: "chrome://settings",
     validWebsite: "https://en.wikipedia.org/wiki/React_(software)",
     invalidWebsite: "http://www.iuheoghuergerilo.com/",
+    validVideo: "https://www.youtube.com/watch?v=GE-lAftuQgc&ab_channel=RealLifeLore",
     shortVideo: "https://www.youtube.com/watch?v=GE-lAftuQgc&ab_channel=RealLifeLore",
     longVideo: "https://www.youtube.com/watch?v=dCLhUialKPQ&ab_channel=JavaScriptMastery",
     invalidVideo: "https://www.youtube.com/watch?v=GE-lAftuQge"
