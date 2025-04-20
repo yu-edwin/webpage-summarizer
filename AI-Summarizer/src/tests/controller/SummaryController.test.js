@@ -81,7 +81,7 @@ describe("SummaryController", () => {
 
     it("tests getWebpageSummary with valid website and valid key", async () => {
         global.chrome.storage.sync.set({ provider: "Google" });
-        global.chrome.storage.sync.set({ keyGoogle: keys.valid });
+        global.chrome.storage.sync.set({ apiKeyGoogle: keys.valid });
         global.chrome.tabs.query = vi.fn().mockResolvedValue([{url: links.validWebsite, id: true}]);
 
         const summaryController = new SummaryController();
@@ -92,7 +92,7 @@ describe("SummaryController", () => {
 
     it("tests getWebpageSummary with invalid website", async () => {
         global.chrome.storage.sync.set({ provider: "Google" });
-        global.chrome.storage.sync.set({ keyGoogle: keys.valid });
+        global.chrome.storage.sync.set({ apiKeyGoogle: keys.valid });
         global.chrome.tabs.query = vi.fn().mockResolvedValue([{url: links.invalidWebsite, id: false}]);
 
         const summaryController = new SummaryController();
@@ -103,7 +103,7 @@ describe("SummaryController", () => {
 
     it("tests getWebpageSummary with invalid key", async () => {
         global.chrome.storage.sync.set({ provider: "Google" });
-        global.chrome.storage.sync.set({ keyGoogle: keys.invalid });
+        global.chrome.storage.sync.set({ apiKeyGoogle: keys.invalid });
         const summaryController = new SummaryController();
         const summary = await summaryController.getWebpageSummary();
         expect(GoogleGenAI).toHaveBeenLastCalledWith({ apiKey: keys.invalid});
@@ -112,7 +112,7 @@ describe("SummaryController", () => {
  
 
     it("tests getVideoSummary with valid key", async () => {
-        global.chrome.storage.sync.set({ keyGoogle: keys.valid});
+        global.chrome.storage.sync.set({ apiKeyGoogle: keys.valid});
 
         const summaryController = new SummaryController();
         const summary = await summaryController.getVideoSummary(links.validVideo);
@@ -122,7 +122,7 @@ describe("SummaryController", () => {
     });
 
     it("tests getVideoSummary with invalid key", async () => {
-        global.chrome.storage.sync.set({ keyGoogle: keys.invalid});
+        global.chrome.storage.sync.set({ apiKeyGoogle: keys.invalid});
 
         const summaryController = new SummaryController();
         const summary = await summaryController.getVideoSummary(links.validVideo);
@@ -134,7 +134,7 @@ describe("SummaryController", () => {
 
     it("tests getSummary for video correctly", async () => {
         global.chrome.storage.sync.set({ provider: "Google" });
-        global.chrome.storage.sync.set({ keyGoogle: keys.valid });
+        global.chrome.storage.sync.set({ apiKeyGoogle: keys.valid });
         global.chrome.tabs.query = vi.fn().mockResolvedValue([{url: links.validVideo, id: true}]);
 
         const summaryController = new SummaryController();
@@ -146,7 +146,7 @@ describe("SummaryController", () => {
 
     it("tests getSummary for website correctly", async () => {
         global.chrome.storage.sync.set({ provider: "Google" });
-        global.chrome.storage.sync.set({ keyGoogle: keys.valid });
+        global.chrome.storage.sync.set({ apiKeyGoogle: keys.valid });
         global.chrome.tabs.query = vi.fn().mockResolvedValue([{url: links.validWebsite, id: true}]);
 
         const summaryController = new SummaryController();
