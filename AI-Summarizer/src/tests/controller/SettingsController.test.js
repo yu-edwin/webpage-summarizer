@@ -2,7 +2,12 @@ import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import { SettingsController } from "../../controller/SettingsController.jsx";
 import { mockChrome } from "../mocks.js";
 
-describe("SettingsController", () => {
+/**
+ * Test cases for SettingsController, tests for:
+ * updating the properties for LLM rpoviders, API keys,
+ * and system prompt.
+ */
+describe("test cases for SettingsController usage", () => {
     //. loading mocked chrome
     beforeAll(() =>{
         global.chrome = mockChrome

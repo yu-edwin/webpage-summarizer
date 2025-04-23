@@ -1,34 +1,37 @@
 import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest"
+import { mockOpenAI,
+        mockAnthropic,
+        mockGoogle,
+        links,
+        keys } from "../mocks.js";
 
 // mocking implementations for OpenAI, Anthropic, Google
 vi.mock("openai", async () =>{
-    const mocks = await import("../mocks.js");
     return {
-        OpenAI: vi.fn().mockImplementation((param) => new mocks.mockOpenAI(param)),
-        default:  vi.fn().mockImplementation((param) => new mocks.mockOpenAI(param))
+        OpenAI: vi.fn().mockImplementation((param) => new mockOpenAI(param)),
+        default:  vi.fn().mockImplementation((param) => new mockOpenAI(param))
     }
 });
 vi.mock("@anthropic-ai/sdk", async () =>{
-    const mocks = await import("../mocks.js");
     return {
-        Anthropic: vi.fn().mockImplementation((param) => new mocks.mockAnthropic(param)),
-        default: vi.fn().mockImplementation((param) => new mocks.mockAnthropic(param))
+        Anthropic: vi.fn().mockImplementation((param) => new mockAnthropic(param)),
+        default: vi.fn().mockImplementation((param) => new mockAnthropic(param))
     }
 });
 vi.mock("@google/genai", async () =>{
-    const mocks = await import("../mocks.js");
     return {
-        GoogleGenAI: vi.fn().mockImplementation((param) => new mocks.mockGoogle(param)),
+        GoogleGenAI: vi.fn().mockImplementation((param) => new mockGoogle(param)),
     }
 });
 
 import { SummaryView } from "../../view/SummaryView.jsx";
-import { mockChrome,
-        links,
-        keys} from "../mocks.js";
 import { render, screen, cleanup } from "@testing-library/react";
 
 
+/**
+ * Test cases for SummaryView, tests for:
+ * getting webpage and video summaries.
+ */
 describe("SummaryView", () => {
     //. loading mocked chrome
     beforeAll(() =>{

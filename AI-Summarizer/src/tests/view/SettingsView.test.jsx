@@ -4,7 +4,11 @@ import { SettingsView } from "../../view/SettingsView.jsx";
 import { mockChrome } from "../mocks.js";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
-describe("SettingsView", () => {
+/**
+ * Test cases for SettingsView, tests for:
+ * simulating events for updating the elemnts in SettingsView.
+ */
+describe("test cases for SettingsView usage", () => {
     //. loading mocked chrome
     beforeAll(() =>{
         global.chrome = mockChrome

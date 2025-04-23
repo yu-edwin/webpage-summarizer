@@ -1,24 +1,26 @@
 import { describe, it, expect, vi} from "vitest";
+import { mockOpenAI,
+        mockAnthropic,
+        mockGoogle,
+        links,
+        keys } from "../mocks.js";
 
 // mocking implementations for OpenAI, Anthropic, Google
 vi.mock("openai", async () =>{
-    const mocks = await import("../mocks.js");
     return {
-        OpenAI: vi.fn().mockImplementation((param) => new mocks.mockOpenAI(param)),
-        default:  vi.fn().mockImplementation((param) => new mocks.mockOpenAI(param))
+        OpenAI: vi.fn().mockImplementation((param) => new mockOpenAI(param)),
+        default:  vi.fn().mockImplementation((param) => new mockOpenAI(param))
     }
 });
 vi.mock("@anthropic-ai/sdk", async () =>{
-    const mocks = await import("../mocks.js");
     return {
-        Anthropic: vi.fn().mockImplementation((param) => new mocks.mockAnthropic(param)),
-        default: vi.fn().mockImplementation((param) => new mocks.mockAnthropic(param))
+        Anthropic: vi.fn().mockImplementation((param) => new mockAnthropic(param)),
+        default: vi.fn().mockImplementation((param) => new mockAnthropic(param))
     }
 });
 vi.mock("@google/genai", async () =>{
-    const mocks = await import("../mocks.js");
     return {
-        GoogleGenAI: vi.fn().mockImplementation((param) => new mocks.mockGoogle(param)),
+        GoogleGenAI: vi.fn().mockImplementation((param) => new mockGoogle(param)),
     }
 });
 
@@ -26,17 +28,14 @@ import { SummaryModel } from "../../model/SummaryModel.jsx";
 import { GoogleGenAI } from "@google/genai";
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
-import { links, keys } from "../mocks.js";
 
 
 /**
  * Test cases for SummaryModel, tests for:
  * getting video summary with Google,
- * getting web summary with OpenAI,
- * getting web summary with Anthropic,
- * getting web summary with Google,
+ * getting webpages summaries with OpenAI, Anthropic, Google.
  */
-describe("SummaryModel", () => {
+describe("test cases for SummaryModel usage", () => {
     it("tests getting webpage summary with valid webpage and valid key using OpenAI", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryOpenAI("correct input", keys.valid, "");

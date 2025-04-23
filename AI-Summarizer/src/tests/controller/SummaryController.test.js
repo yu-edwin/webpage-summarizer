@@ -1,35 +1,40 @@
 import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
+import { mockChrome,
+        mockOpenAI,
+        mockAnthropic,
+        mockGoogle,
+        links,
+        keys } from "../mocks.js";
 
 // mocking implementations for OpenAI, Anthropic, Google
 vi.mock("openai", async () =>{
-    const mocks = await import("../mocks.js");
     return {
-        OpenAI: vi.fn().mockImplementation((param) => new mocks.mockOpenAI(param)),
-        default:  vi.fn().mockImplementation((param) => new mocks.mockOpenAI(param))
+        OpenAI: vi.fn().mockImplementation((param) => new mockOpenAI(param)),
+        default:  vi.fn().mockImplementation((param) => new mockOpenAI(param))
     }
 });
 vi.mock("@anthropic-ai/sdk", async () =>{
-    const mocks = await import("../mocks.js");
     return {
-        Anthropic: vi.fn().mockImplementation((param) => new mocks.mockAnthropic(param)),
-        default: vi.fn().mockImplementation((param) => new mocks.mockAnthropic(param))
+        Anthropic: vi.fn().mockImplementation((param) => new mockAnthropic(param)),
+        default: vi.fn().mockImplementation((param) => new mockAnthropic(param))
     }
 });
 vi.mock("@google/genai", async () =>{
-    const mocks = await import("../mocks.js");
     return {
-        GoogleGenAI: vi.fn().mockImplementation((param) => new mocks.mockGoogle(param)),
+        GoogleGenAI: vi.fn().mockImplementation((param) => new mockGoogle(param))
     }
 });
 
 import { GoogleGenAI } from "@google/genai";
 import { SummaryController } from "../../controller/SummaryController.jsx";
-import { mockChrome,
-        links,
-        keys } from "../mocks.js";
 
-describe("SummaryController", () => {
-    //. loading mocked chrome
+/**
+ * Test cases for SummaryController, tests for:
+ * getting summary for webpage and videos, as well as
+ * associated helper functions.
+ */
+describe("test cases for SummaryController usage", () => {
+    // loading mocked chrome
     beforeAll(() =>{
         global.chrome = mockChrome
     });
