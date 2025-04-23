@@ -12,7 +12,7 @@ export class SummaryModel {
 
         let openai;
         try {
-            openai = new OpenAI({ apiKey: apiKey });
+            openai = new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true });
         } catch {
             return "Failed to configure!";
         }
@@ -20,7 +20,7 @@ export class SummaryModel {
         let result;
         try {
             result = await openai.responses.create({
-                model: "claude-3-haiku-20240307",
+                model: "gpt-4.1-nano",
                 instructions: "You are an AI webpage summarizer, summarize the contents of this webpage. "
                     + systemPrompt,
                 input: webpageContent
@@ -40,7 +40,7 @@ export class SummaryModel {
 
         let anthropic;
         try {
-            anthropic = new Anthropic({ apiKey: apiKey });
+            anthropic = new Anthropic({ apiKey: apiKey, dangerouslyAllowBrowser: true });
         } catch {
             return "Failed to configure!";
         }

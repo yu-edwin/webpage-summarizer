@@ -8,7 +8,7 @@ export function SummaryView() {
 
     useEffect(() => {
         (async () => {
-            setSummary(await summaryController.updateSummary());
+            setSummary(await summaryController.getSummary());
         })();
     },[]);
     return (
@@ -17,13 +17,3 @@ export function SummaryView() {
         </div> 
     )
 }
-
-// export function SummaryView() {
-//     const { summary } = SummaryController();
-//     return (
-//         <div>
-//             { summary }
-//         </div> 
-//     )
-// }
-
