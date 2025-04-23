@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest"
-import { mockOpenAI,
+import { mockChrome,
+        mockOpenAI,
         mockAnthropic,
         mockGoogle,
         links,
@@ -49,7 +50,7 @@ describe("SummaryView", () => {
         global.chrome.storage.sync.set({ apiKeyGoogle: keys.valid});
         render(<SummaryView />);
         
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 200));
         const summary = (await screen.findByTestId("SummaryView test")).textContent;
         expect(summary).toEqual("correct summary");
     });
@@ -60,7 +61,7 @@ describe("SummaryView", () => {
         global.chrome.storage.sync.set({ apiKeyGoogle: keys.valid});
         render(<SummaryView />);
 
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 200));
         const summary = (await screen.findByTestId("SummaryView test")).textContent;
         expect(summary).toEqual("correct summary");
     });
@@ -70,7 +71,7 @@ describe("SummaryView", () => {
         global.chrome.storage.sync.set({ apiKeyGoogle: keys.valid});
         render(<SummaryView />);
 
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 200));
         const summary = (await screen.findByTestId("SummaryView test")).textContent;
         expect(summary).toEqual("Invalid website!");
     });
