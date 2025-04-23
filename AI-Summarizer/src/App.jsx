@@ -3,6 +3,11 @@ import './App.css'
 import { SettingsView } from "./view/SettingsView.jsx"
 import { SummaryView } from "./view/SummaryView.jsx"
 
+/**
+ * View element representing the whole app,
+ * also manages the tab state.
+ * @return {JSX.element} element for the app
+ */
 function App() {
     const [tab, setTab] = useState("summary");
 
@@ -39,4 +44,4 @@ function App() {
     )
 }
 
-export default App
+export default App;
