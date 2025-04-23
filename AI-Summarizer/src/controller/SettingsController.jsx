@@ -46,9 +46,9 @@ export class SettingsController{
      * @return {string} initialSystemPrompt: previously used system prompt, "" if not found
      */
     getInitialValues = async () => {
-        const provider = await this.settingsModel.fetchProperty("provider") ?? "OpenAI";
-        const apiKey = await this.settingsModel.fetchProperty("apiKey" + provider) ?? "";
-        const systemPrompt = await this.settingsModel.fetchProperty("systemPrompt") ?? "";
+        const provider = (await this.settingsModel.fetchProperty("provider")) ?? "OpenAI";
+        const apiKey = (await this.settingsModel.fetchProperty("apiKey" + provider)) ?? "";
+        const systemPrompt = (await this.settingsModel.fetchProperty("systemPrompt")) ?? "";
         return {
             initialProvider: provider,
             initialApiKey: apiKey,
