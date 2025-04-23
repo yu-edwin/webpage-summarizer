@@ -7,6 +7,10 @@ import { SettingsModel } from "../model/SettingsModel.jsx"
  * user's associated chrome storage.
  */
 export class SettingsController{
+    /**
+     * constructor for SettingsController,
+     * initializes SettingsModel.
+     */
     constructor() {
         this.settingsModel = new SettingsModel();
     };
