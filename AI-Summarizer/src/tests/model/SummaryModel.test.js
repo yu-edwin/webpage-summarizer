@@ -40,14 +40,14 @@ describe("SummaryModel", () => {
     it("tests getting webpage summary with valid webpage and valid key using OpenAI", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryOpenAI("correct input", keys.valid, "");
-        expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid });
+        expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid, dangerouslyAllowBrowser: true });
         expect(summary).toEqual("correct summary");
     });
 
     it("tests getting webpage summary with invalid key using OpenAI", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryOpenAI("correct input", keys.invalid, "");
-        expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.invalid });
+        expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.invalid, dangerouslyAllowBrowser: true });
         expect(summary).toEqual("Failed to generate webpage summary!");
     });
 
@@ -60,7 +60,7 @@ describe("SummaryModel", () => {
     it("tests getting webpage summary with invalid webpage using OpenAI", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryOpenAI(links.invalidWebsite, keys.valid, "");
-        expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid });
+        expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid, dangerouslyAllowBrowser: true });
         expect(summary).toEqual("Failed to generate webpage summary!");
     });
 
@@ -68,14 +68,14 @@ describe("SummaryModel", () => {
     it("tests getting webpage summary with valid webpage and valid key using Anthropic", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryAnthropic("correct input", keys.valid, "");
-        expect(Anthropic).toHaveBeenLastCalledWith({ apiKey: keys.valid });
+        expect(Anthropic).toHaveBeenLastCalledWith({ apiKey: keys.valid, dangerouslyAllowBrowser: true });
         expect(summary).toEqual("correct summary");
     });
 
     it("tests getting webpage summary with invalid key using Anthropic", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryAnthropic("correct input", keys.invalid, "");
-        expect(Anthropic).toHaveBeenLastCalledWith({ apiKey: keys.invalid });
+        expect(Anthropic).toHaveBeenLastCalledWith({ apiKey: keys.invalid, dangerouslyAllowBrowser: true });
         expect(summary).toEqual("Failed to generate webpage summary!");
     });
 
@@ -88,7 +88,7 @@ describe("SummaryModel", () => {
     it("tests getting webpage summary with invalid webpage using Anthropic", async () => {
         const summaryModel = new SummaryModel();
         const summary = await summaryModel.getSummaryAnthropic("wrong input", keys.valid, "");
-        expect(Anthropic).toHaveBeenLastCalledWith({ apiKey: keys.valid });
+        expect(Anthropic).toHaveBeenLastCalledWith({ apiKey: keys.valid, dangerouslyAllowBrowser: true });
         expect(summary).toEqual("Failed to generate webpage summary!");
     });
 
