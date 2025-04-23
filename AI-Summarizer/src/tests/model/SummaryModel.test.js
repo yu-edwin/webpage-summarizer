@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach, vi} from "vitest";
+import { describe, it, expect, vi} from "vitest";
 
 // mocking implementations for OpenAI, Anthropic, Google
 vi.mock("openai", async () =>{
@@ -26,9 +26,7 @@ import { SummaryModel } from "../../model/SummaryModel.jsx";
 import { GoogleGenAI } from "@google/genai";
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
-import { links,
-        keys,
-        } from "../mocks.js";
+import { links, keys } from "../mocks.js";
 
 
 /**
@@ -65,9 +63,6 @@ describe("SummaryModel", () => {
         expect(OpenAI).toHaveBeenLastCalledWith({ apiKey: keys.valid });
         expect(summary).toEqual("Failed to generate webpage summary!");
     });
-
-
-    
 
 
     it("tests getting webpage summary with valid webpage and valid key using Anthropic", async () => {

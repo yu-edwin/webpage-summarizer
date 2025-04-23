@@ -1,15 +1,13 @@
 import React from "react";
 import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import { SettingsView } from "../../view/SettingsView.jsx";
-import { mockChromeStorageSync } from "../mockChrome.jsx";
-import { render, renderHook, screen, fireEvent, cleanup } from "@testing-library/react";
+import { mockChrome } from "../mocks.js";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 describe("SettingsView", () => {
     //. loading mocked chrome
     beforeAll(() =>{
-        global.chrome = {}
-        global.chrome.storage = {}
-        global.chrome.storage.sync = mockChromeStorageSync;
+        global.chrome = mockChrome
     });
 
     // clear storage before each test case

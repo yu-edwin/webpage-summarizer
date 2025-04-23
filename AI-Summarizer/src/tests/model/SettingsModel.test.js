@@ -1,13 +1,11 @@
 import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import { SettingsModel } from "../../model/SettingsModel.jsx";
-import { mockChromeStorageSync } from "../mockChrome.jsx";
+import { mockChrome } from "../mocks.js";
 
 describe("SettingsModel", () => {
     //. loading mocked chrome
     beforeAll(() =>{
-        global.chrome = {}
-        global.chrome.storage = {}
-        global.chrome.storage.sync = mockChromeStorageSync;
+        global.chrome = mockChrome;
     });
     
     // clear storage before each test case

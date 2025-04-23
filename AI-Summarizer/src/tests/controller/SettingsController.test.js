@@ -1,13 +1,11 @@
 import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import { SettingsController } from "../../controller/SettingsController.jsx";
-import { mockChromeStorageSync } from "../mockChrome.jsx";
+import { mockChrome } from "../mocks.js";
 
 describe("SettingsController", () => {
     //. loading mocked chrome
     beforeAll(() =>{
-        global.chrome = {}
-        global.chrome.storage = {}
-        global.chrome.storage.sync = mockChromeStorageSync;
+        global.chrome = mockChrome
     });
 
     // clear storage before each test case
@@ -29,7 +27,6 @@ describe("SettingsController", () => {
         expect(initialProvider).toEqual("Google");
         expect(initialSystemPrompt).toEqual("correct system prompt");
         expect(initialApiKey).toEqual("correct key");
-
     });
 
     it("tests updateSystemPrompt, checks initial, then updates system prompt twice", () => {
