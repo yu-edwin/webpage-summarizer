@@ -10,7 +10,8 @@
     },
     "permissions": [
         "scripting",
-        "storage"
+        "storage",
+        "activeTab"
     ],
     "host_permissions": [
         "http://*/*",
