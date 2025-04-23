@@ -3,8 +3,19 @@ import OpenAI from "openai";
 import { GoogleGenAI } from "@google/genai";
 
 
-
+/**
+ * Model class for summary.
+ * Responsible for API calls to get summaries.
+ */
 export class SummaryModel {
+    /**
+     * Asynchronously gets the summary for a webpage
+     * using OpenAI's GPT 4.1 Nano model.
+     * @param {string} webpageContent: string containing the webpage's contents
+     * @param {string} apiKey: user's API key for OpenAI
+     * @param {string{ systemPrompt: user's specified system promnpt
+     * @return {string} resulting webpage summary, or error message.
+     */
     getSummaryOpenAI = async (webpageContent, apiKey, systemPrompt) => {
         if (!apiKey) {
             return "Missing API key!";
@@ -33,6 +44,14 @@ export class SummaryModel {
         return result.output_text;
     }
 
+    /**
+     * Asynchronously gets the summary for a webpage
+     * using Anthropic's Claude 3 Haiku model
+     * @param {string} webpageContent: string containing the webpage's contents
+     * @param {string} apiKey: user's API key for Anthropic
+     * @param {string{ systemPrompt: user's specified system promnpt
+     * @return {string} resulting webpage summary, or error message.
+     */
     getSummaryAnthropic = async (webpageContent, apiKey, systemPrompt) => {
         if (!apiKey) {
             return "Missing API key!";
@@ -64,6 +83,14 @@ export class SummaryModel {
         return result.content[0].text;
     }
 
+    /**
+     * Asynchronously gets the summary for a webpage
+     * using Google's Gemini 2.0 Flash model.
+     * @param {string} webpageContent: string containing the webpage's contents
+     * @param {string} apiKey: user's API key for Google
+     * @param {string{ systemPrompt: user's specified system promnpt
+     * @return {string} resulting webpage summary, or error message.
+     */
     getSummaryGoogle = async (webpageContent, apiKey, systemPrompt) => {
         if (!apiKey) {
             return "Missing API key!";
@@ -96,8 +123,8 @@ export class SummaryModel {
     /**
      * method for getting video summary using Google's Gemini.
      * @param {string} url: YouTube link to video
-     * @param {string} apiKey: user API key for Google
-     * @param {string} systemPrompt: user's designated system prompt
+     * @param {string} apiKey: user's API key for Google
+     * @param {string{ systemPrompt: user's specified system promnpt
      * @return {string} resulting video summary, or error message.
      */
     getSummaryVideo = async (url, apiKey, systemPrompt) => {
