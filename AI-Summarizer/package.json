@@ -12,9 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
-    "@google-cloud/vertexai": "^1.9.3",
     "@google/genai": "^0.8.0",
-    "@google/generative-ai": "^0.24.0",
     "openai": "^4.93.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -25,7 +23,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.21.0",
+    "eslint": "^9.25.1",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",

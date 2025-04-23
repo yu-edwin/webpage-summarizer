@@ -67,13 +67,17 @@ function SystemPromptInput({ value, update, set }) {
     )
 }
 
+/**
+ * View elemnt for the entire settings tab.
+ * @retrun {JSX.element} react fragment containing LLM provider selector,
+ * API key input box, and system prompt input box
+ */
 export function SettingsView() {
     const settingsController = new SettingsController();
-
     const [ provider, setProvider ] = useState("OpenAI");
     const [ apiKey, setApiKey ] = useState("");
     const [ systemPrompt, setSystemPrompt ] = useState("");
-    
+
     useEffect(() => {
         (async () => {
             const { initialProvider, initialApiKey, initialSystemPrompt } = await settingsController.getInitialValues();
@@ -81,7 +85,6 @@ export function SettingsView() {
             setApiKey(initialApiKey);
             setSystemPrompt(initialSystemPrompt);
         })();
-
     },[]);
 
     return (

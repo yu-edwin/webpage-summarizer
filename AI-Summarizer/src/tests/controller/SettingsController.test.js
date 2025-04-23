@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import { SettingsController } from "../../controller/SettingsController.jsx";
 import { mockChrome } from "../mocks.js";
 

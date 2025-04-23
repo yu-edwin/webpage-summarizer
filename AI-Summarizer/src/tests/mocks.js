@@ -51,7 +51,7 @@ export const mockChrome = {
     },
     tabs: {},
     scripting: {
-        executeScript: vi.fn().mockImplementation(({target, func}) => {
+        executeScript: vi.fn().mockImplementation(({target}) => {
             if (!target.tabId) {
                 return Promise.resolve([{ result: "wrong input" }])
             } else{
