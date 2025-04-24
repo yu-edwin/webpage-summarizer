@@ -104,13 +104,13 @@ export class SummaryController {
      * @return {string} string containing the summary
      */
     getSummary = async () => {
-        const url = await this.getUrl();
-        if (await this.isVideo(url)) {
-            return await this.getVideoSummary(url);
-        } else if (!/youtube\.com/.test(url)) {
-            return await this.getWebpageSummary();
-        } else {
+        let url= await this.getUrl();
+        if (!url || !url.startsWith("http")) {
             return "Invalid website!";
+        } else if (await this.isVideo(url)) {
+            return await this.getVideoSummary(url);
+        } else  {
+            return await this.getWebpageSummary();
         }
     }
 }

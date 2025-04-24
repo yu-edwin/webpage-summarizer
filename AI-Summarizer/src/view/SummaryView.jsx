@@ -16,7 +16,10 @@ export function SummaryView() {
     },[]);
 
     return (
-        <div data-testid="SummaryView test">
+        <div 
+            data-testid="SummaryView test"
+            className="d-flex text-justify p-2"
+        >
             { summary }
         </div> 
     )
