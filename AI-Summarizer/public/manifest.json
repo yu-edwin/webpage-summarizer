@@ -1,10 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "placeholderExtensionName",
+    "name": "AI Summarize",
     "version": "0.0.0",
-    "icons": {
-        "32": "iconPlaceholder.jpg"
-    },
     "action": {
         "default_popup": "index.html"
     },
