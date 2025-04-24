@@ -109,8 +109,10 @@ export class SummaryController {
             return "Invalid website!";
         } else if (await this.isVideo(url)) {
             return await this.getVideoSummary(url);
-        } else  {
+        } else if (!/youtube\.com/.test(url)) {
             return await this.getWebpageSummary();
+        } else {
+            return "Invalid website!";
         }
     }
 }
