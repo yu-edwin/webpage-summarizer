@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import { SettingsView } from "./view/SettingsView.jsx"
-import { SummaryView } from "./view/SummaryView.jsx"
+const SettingsView = lazy(() => import("./view/SettingsView.jsx"));
+const SummaryView = lazy(() => import("./view/SummaryView.jsx"));
 
 /**
  * View element representing the whole app,
