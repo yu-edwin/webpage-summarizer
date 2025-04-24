@@ -14,7 +14,7 @@ import { SettingsController } from "../controller/SettingsController.jsx"
 function ProviderSelector({ value, update, set, setApiKey }) {
     return (
         <select
-            className="form-select mb-3"
+            className="form-select mt-3"
             value = { value }
             onChange = {async (newProvider) => {
                 set(newProvider.target.value);
@@ -37,7 +37,7 @@ function ProviderSelector({ value, update, set, setApiKey }) {
  */
 function KeyInput({ value, update, set }) {
     return (
-        <div className="input-group mb-3">
+        <div className="input-group mt-3">
             <input
                 type="text"
                 className="form-control"
@@ -61,12 +61,12 @@ function KeyInput({ value, update, set }) {
  */
 function SystemPromptInput({ value, update, set }) {
     return (
-        <div className="input-group mb-3">
-            <input
+        <div className="input-group mt-3">
+            <textarea
                 type = "text"
-                className="form-control"
+                className="form-control resize-none"
                 placeholder="System prompt"
-                style={{ height: '5rem', resize: 'none' }}
+                rows="13"
                 value = { value }
                 onChange = {(newSystemPrompt) => {
                     update(newSystemPrompt.target.value);
