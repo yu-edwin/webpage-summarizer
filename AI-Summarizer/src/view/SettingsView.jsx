@@ -14,7 +14,7 @@ import { SettingsController } from "../controller/SettingsController.jsx"
 function ProviderSelector({ value, update, set, setApiKey }) {
     return (
         <select
-            className="form-select"
+            className="form-select mb-3"
             value = { value }
             onChange = {async (newProvider) => {
                 set(newProvider.target.value);
@@ -37,14 +37,18 @@ function ProviderSelector({ value, update, set, setApiKey }) {
  */
 function KeyInput({ value, update, set }) {
     return (
-        <input
-            type="text"
-            value={ value }
-            onChange={(newApiKey)=>{
-                update(newApiKey.target.value);
-                set(newApiKey.target.value);
-            }}
-        />
+        <div className="input-group mb-3">
+            <input
+                type="text"
+                className="form-control"
+                placeholder="API key"
+                value={ value }
+                onChange={(newApiKey)=>{
+                    update(newApiKey.target.value);
+                    set(newApiKey.target.value);
+                }}
+            />
+        </div>
     )
 }
 
@@ -57,14 +61,19 @@ function KeyInput({ value, update, set }) {
  */
 function SystemPromptInput({ value, update, set }) {
     return (
-        <input
-            type = "text"
-            value = { value }
-            onChange = {(newSystemPrompt) => {
-                update(newSystemPrompt.target.value);
-                set(newSystemPrompt.target.value);
-            }}
-        />
+        <div className="input-group mb-3">
+            <input
+                type = "text"
+                className="form-control"
+                placeholder="System prompt"
+                style={{ height: '5rem', resize: 'none' }}
+                value = { value }
+                onChange = {(newSystemPrompt) => {
+                    update(newSystemPrompt.target.value);
+                    set(newSystemPrompt.target.value);
+                }}
+            />
+        </div>
     )
 }
 
