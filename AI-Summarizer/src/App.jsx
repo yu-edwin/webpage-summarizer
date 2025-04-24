@@ -12,36 +12,70 @@ function App() {
     const [tab, setTab] = useState("summary");
 
     return (
-        <>
-            <div>
-                <label>
-                    <input
-                        type="radio"
-                        name="tabs"
-                        checked={tab === "summary"}
-                        onChange={() => setTab("summary")}
-                        value="summary"
-                    />
+        <div>
+            <div className="d-flex">
+                <input
+                    type="radio"
+                    className="btn-check"
+                    name="radio"
+                    id="option1"
+                    autoComplete="off"
+                    checked={tab === "summary"}
+                    onChange={() => setTab("summary")}
+                    defaultChecked
+                />
+                <label className="btn flex-fill" htmlFor="option1">
                     Summary
-                </label> 
-                <label>
-                    <input
-                        type="radio"
-                        name="tabs"
-                        checked={tab === "settings"}
-                        onChange={() => setTab("settings")}
-                        value="settings"
-                    />
+                </label>
+
+                <input
+                    type="radio"
+                    className="btn-check"
+                    name="radio"
+                    id="option2"
+                    autoComplete="off"
+                    checked={tab === "settings"}
+                    onChange={() => setTab("settings")}
+                />
+                <label className="btn flex-fill" htmlFor="option2">
                     Settings
-                </label> 
+                </label>
             </div>
-            <h1>AI summarizer</h1>
             <div className="card">
                 {tab === "settings" && <SettingsView />}
                 {tab === "summary" && <SummaryView />}
             </div>
-        </>
+        </div>
     )
 }
 
 export default App;
+
+{/* <div>
+<label class="radio">
+    <input
+        type="radio"
+        name="radio"
+        checked={tab === "summary"}
+        onChange={() => setTab("summary")}
+        value="summary"
+
+    />
+    <span class="name">Summary</span>
+</label> 
+<label class="radio">
+    <input
+        type="radio"
+        name="radio"
+        checked={tab === "settings"}
+        onChange={() => setTab("settings")}
+        value="settings"
+    />
+    <span class="name">Settings</span>
+</label> 
+</div>
+<h1 className='mt-16'>AI summarizer</h1>
+<div className="card">
+{tab === "settings" && <SettingsView />}
+{tab === "summary" && <SummaryView />}
+</div> */}
