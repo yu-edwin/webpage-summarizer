@@ -158,7 +158,5 @@ export const links = {
     validWebsite: "https://en.wikipedia.org/wiki/React_(software)",
     invalidWebsite: "http://www.iuheoghuergerilo.com/",
     validVideo: "https://www.youtube.com/watch?v=GE-lAftuQgc&ab_channel=RealLifeLore",
-    shortVideo: "https://www.youtube.com/watch?v=GE-lAftuQgc&ab_channel=RealLifeLore",
-    longVideo: "https://www.youtube.com/watch?v=dCLhUialKPQ&ab_channel=JavaScriptMastery",
     invalidVideo: "https://www.youtube.com/watch?v=GE-lAftuQge"
 }
