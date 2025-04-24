@@ -14,6 +14,7 @@ import { SettingsController } from "../controller/SettingsController.jsx"
 function ProviderSelector({ value, update, set, setApiKey }) {
     return (
         <select
+            className="form-select"
             value = { value }
             onChange = {async (newProvider) => {
                 set(newProvider.target.value);

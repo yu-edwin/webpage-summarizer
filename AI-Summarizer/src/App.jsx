@@ -50,32 +50,3 @@ function App() {
 }
 
 export default App;
-
-{/* <div>
-<label class="radio">
-    <input
-        type="radio"
-        name="radio"
-        checked={tab === "summary"}
-        onChange={() => setTab("summary")}
-        value="summary"
-
-    />
-    <span class="name">Summary</span>
-</label> 
-<label class="radio">
-    <input
-        type="radio"
-        name="radio"
-        checked={tab === "settings"}
-        onChange={() => setTab("settings")}
-        value="settings"
-    />
-    <span class="name">Settings</span>
-</label> 
-</div>
-<h1 className='mt-16'>AI summarizer</h1>
-<div className="card">
-{tab === "settings" && <SettingsView />}
-{tab === "summary" && <SummaryView />}
-</div> */}
