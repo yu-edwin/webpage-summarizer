@@ -1,5 +1,5 @@
 # AI Webpage Summary Chrome Extension
-A Google Chrome extension that generates AI summaries of webpages and YouTube  videos using LLMs. Currently Supports 
+A Google Chrome extension that generates AI summaries of webpages and YouTube videos using LLMs. Currently Supports LLM models from OpenAI, Anthropic, and Google.
 
 ## Getting Started
 
@@ -31,3 +31,4 @@ To set up the plugin:
 - ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 
 ## License
+This project is licensed under the MIT license - see[LICENSE](LICENSE) for more details.
