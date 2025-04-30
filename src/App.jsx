@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import './App.css'
+import React, { useState, lazy, Suspense } from 'react';
+import './App.css';
+
 const SettingsView = lazy(() => import("./view/SettingsView.jsx"));
 const SummaryView = lazy(() => import("./view/SummaryView.jsx"));
 
@@ -42,8 +43,10 @@ function App() {
                 </label>
             </div>
             <div className="card">
-                {tab === "settings" && <SettingsView />}
-                {tab === "summary" && <SummaryView />}
+                <Suspense fallback={<div>Loading...</div>}>
+                    {tab === "settings" && <SettingsView />}
+                    {tab === "summary" && <SummaryView />}
+                </Suspense>
             </div>
         </div>
     )

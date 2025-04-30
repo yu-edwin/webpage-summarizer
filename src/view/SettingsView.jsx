@@ -82,7 +82,7 @@ function SystemPromptInput({ value, update, set }) {
  * @retrun {JSX.element} react fragment containing LLM provider selector,
  * API key input box, and system prompt input box
  */
-export function SettingsView() {
+function SettingsView() {
     const settingsController = new SettingsController();
     const [ provider, setProvider ] = useState("OpenAI");
     const [ apiKey, setApiKey ] = useState("");
@@ -125,3 +125,5 @@ export function SettingsView() {
                     
     )
 }
+
+export default SettingsView;
