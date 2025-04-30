@@ -31,4 +31,4 @@ To set up the plugin:
 - ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 
 ## License
-This project is licensed under the MIT license - see[LICENSE](LICENSE) for more details.
+This project is licensed under the MIT license - see [LICENSE](LICENSE) for more details.
