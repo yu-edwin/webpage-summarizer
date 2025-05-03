@@ -25,7 +25,7 @@ vi.mock("@google/genai", async () =>{
     }
 });
 
-import { SummaryView } from "../../view/SummaryView.jsx";
+import SummaryView from "../../view/SummaryView.jsx";
 import { render, screen, cleanup } from "@testing-library/react";
 
 
